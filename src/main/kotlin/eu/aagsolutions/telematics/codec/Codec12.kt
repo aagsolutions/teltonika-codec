@@ -10,10 +10,35 @@
 
 package eu.aagsolutions.telematics.codec
 
-interface BaseCodec<T> {
-    /**
-     * Decode binary input.
-     */
-    fun decode(): T
-    fun encode(): String
+import eu.aagsolutions.telematics.exceptions.CRCException
+
+class Codec12(data: String) : Codec<String>(data) {
+
+    @Throws(CRCException::class)
+    override fun decode(): String {
+        val codecId = getData().substring(16, 18).toInt(16)
+        if (codecId != 12) {
+            throw CRCException("Invalid codec")
+        }
+        checkCrc()
+        val dataSize = getData().substring(22, 30).toInt(16)
+        val rsp = hexStringToByteArray(getData().substring(30, 30 + dataSize * 2))
+        return String(rsp, Charsets.UTF_8)
+    }
+
+
+    override fun encode(): String {
+        val cmd = getData().toByteArray(Charsets.UTF_8)
+        val cmdSize = bytesToHex(toBytes(4, cmd.size))
+        val dataSize = bytesToHex(toBytes(4, 1 + 1 + 1 + 4 + cmd.size + 1))
+        val completeData = "0C" + "01" + "05" + cmdSize +
+                bytesToHex(getData().toByteArray(Charsets.UTF_8)) + "01"
+
+        val crc = calculateCrc(hexStringToByteArray(completeData))
+
+        val completeMsgHex = "00000000" + dataSize +
+                completeData + bytesToHex(toBytes(4, crc))
+        return completeMsgHex.uppercase()
+    }
+
 }
