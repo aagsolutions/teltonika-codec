@@ -20,7 +20,6 @@ fun hexStringToByteArray(hexString: String): ByteArray {
     return data
 }
 
-
 fun bytesToHex(bytes: ByteArray): String {
     val hexString = StringBuilder()
     for (aByte in bytes) {
@@ -32,3 +31,59 @@ fun bytesToHex(bytes: ByteArray): String {
     }
     return hexString.toString()
 }
+
+fun hexToBinary(hex: String): String {
+    return hex.map {
+        val binary = Integer.toBinaryString(it.toString().toInt(16))
+        String.format("%4s", binary).replace(' ', '0')
+    }.joinToString("")
+}
+
+fun encodeGeoHash(latitude: Double, longitude: Double, precision: Int = 12): String {
+    val base32Map = "0123456789bcdefghjkmnpqrstuvwxyz"
+    var minLat = -90.0
+    var maxLat = 90.0
+    var minLon = -180.0
+    var maxLon = 180.0
+
+    val geohash = StringBuilder()
+    var isEvenBit = true
+    var bits = 0
+    var base32CharIndex = 0
+
+    while (geohash.length < precision) {
+        if (isEvenBit) {
+            // Process longitude
+            val mid = (minLon + maxLon) / 2.0
+            if (longitude >= mid) {
+                base32CharIndex = (base32CharIndex shl 1) or 1
+                minLon = mid
+            } else {
+                base32CharIndex = base32CharIndex shl 1
+                maxLon = mid
+            }
+        } else {
+            // Process latitude
+            val mid = (minLat + maxLat) / 2.0
+            if (latitude >= mid) {
+                base32CharIndex = (base32CharIndex shl 1) or 1
+                minLat = mid
+            } else {
+                base32CharIndex = base32CharIndex shl 1
+                maxLat = mid
+            }
+        }
+        isEvenBit = !isEvenBit
+        bits++
+
+        if (bits == 5) {
+            // Convert the bits to a character
+            geohash.append(base32Map[base32CharIndex])
+            // Reset bits
+            bits = 0
+            base32CharIndex = 0
+        }
+    }
+    return geohash.toString()
+}
+

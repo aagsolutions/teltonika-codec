@@ -8,16 +8,9 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.model
 
-interface BaseCodec<T> {
-    /**
-     * Decode HEX input.
-     */
-    fun decode(): T
-
-    /**
-     * Encode to HEX.
-     */
-    fun encode(): String
-}
+data class Telemetry(
+    var eventTimestamp: Long,
+    var deviceTimestamp: Long,
+    var data: Map<Int, String>,)
