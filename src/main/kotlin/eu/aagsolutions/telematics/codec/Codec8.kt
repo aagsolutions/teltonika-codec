@@ -10,8 +10,14 @@
 
 package eu.aagsolutions.telematics.codec
 
+import eu.aagsolutions.telematics.exceptions.CRCException
 import eu.aagsolutions.telematics.model.Telemetry
 
+/**
+ * Class for decoding/encoding CODEC8 and CODEC8E.
+ * The main difference between the codecs is the iteration step length,
+ * and also CODEC8E can have more data.
+ */
 class Codec8(data: String) : Codec<Telemetry>(data) {
 
     private val HEXADECIMAL_NR = 16
@@ -35,6 +41,9 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
 
     override fun decode(): Telemetry {
         val codecId = getData().substring(CODEC_ID_START_INDEX, CODEC_ID_START_INDEX + CODEC_ID_8_STEP).toInt(HEXADECIMAL_NR)
+        if (codecId != CODEC_ID_8E && codecId != CODEC_ID_8) {
+            throw CRCException("Invalid codec")
+        }
         val dataStep = if (codecId == CODEC_ID_8) CODEC_ID_8_STEP else CODEC_ID_8E_STEP
         this.checkCrc()
         val numberOfRecords = getData().substring(NR_OF_RECORDS_START_INDEX, NR_OF_RECORDS_START_INDEX + NUMBER_OF_RECORDS_STEP).toInt(HEXADECIMAL_NR)
@@ -46,11 +55,36 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
         while (dataFieldPosition < dataEnd) {
             val timestampHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + HEXADECIMAL_NR)
             dataFieldPosition += timestampHex.length
-            val priority = avlDataStart.substring(dataFieldPosition, dataFieldPosition + 2)
-            dataFieldPosition += priority.length
+            val priorityHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + 2)
+            dataFieldPosition += priorityHex.length
             val longitudeHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + 8)
             dataFieldPosition += longitudeHex.length
             val latitudeHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + 8)
+            dataFieldPosition += latitudeHex.length
+            val altitudeHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + 4)
+            dataFieldPosition += altitudeHex.length
+            val angleHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + 4)
+            dataFieldPosition += angleHex.length
+            val satellitesHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + 2)
+            dataFieldPosition += satellitesHex.length
+            val gpsSpeedHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + 4)
+            dataFieldPosition += gpsSpeedHex.length
+            val eventIdHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
+            dataFieldPosition += eventIdHex.length
+            val longitudeBinary = hexToBinary(longitudeHex)
+            var longitude: Double
+            if (longitudeBinary.startsWith("1")) {
+                val longitudeStr = longitudeBinary.substring(1).toLong(2).toString()
+                longitude = -(longitudeStr.substring(0, 2) +
+                        "." +
+                        longitudeStr.substring(2)).toDouble()
+            } else {
+                val longitudeStr = longitudeHex.toLong(HEXADECIMAL_NR).toString()
+                longitude = (longitudeStr.substring(0, 2) +
+                        "." +
+                        longitudeStr.substring(2)).toDouble()
+            }
+
 
         }
         return Telemetry(1,2, values)

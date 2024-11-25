@@ -10,6 +10,11 @@
 
 package eu.aagsolutions.telematics.codec
 
+/**
+ * Convert a hexadecimal string to a byte array.
+ * @param hexString hexadecimal string
+ * @return byte array representation
+ */
 fun hexStringToByteArray(hexString: String): ByteArray {
     val len = hexString.length
     val data = ByteArray(len / 2)
@@ -20,6 +25,11 @@ fun hexStringToByteArray(hexString: String): ByteArray {
     return data
 }
 
+/**
+ * Convert byte array to a hexadecimal string.
+ * @param bytes
+ * @return string representation
+ */
 fun bytesToHex(bytes: ByteArray): String {
     val hexString = StringBuilder()
     for (aByte in bytes) {
@@ -32,6 +42,11 @@ fun bytesToHex(bytes: ByteArray): String {
     return hexString.toString()
 }
 
+/**
+ * Transform a hexadecimal string to a binary string.
+ * @param hex hexadecimal representation
+ * @return binary representation
+ */
 fun hexToBinary(hex: String): String {
     return hex.map {
         val binary = Integer.toBinaryString(it.toString().toInt(16))
@@ -39,6 +54,13 @@ fun hexToBinary(hex: String): String {
     }.joinToString("")
 }
 
+/**
+ * Encode latitude/longitude to geohash.
+ * @param latitude latitude value
+ * @param longitude longitude value
+ * @param precision geohash precision
+ * @return geohash representation
+ */
 fun encodeGeoHash(latitude: Double, longitude: Double, precision: Int = 12): String {
     val base32Map = "0123456789bcdefghjkmnpqrstuvwxyz"
     var minLat = -90.0
