@@ -11,6 +11,7 @@
 package eu.aagsolutions.telematics.codec
 
 import eu.aagsolutions.telematics.exceptions.CRCException
+import eu.aagsolutions.telematics.model.PermanentIO
 import eu.aagsolutions.telematics.model.Telemetry
 
 /**
@@ -40,14 +41,19 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
     private val DATA_FIELD_LENGTH_START_INDEX = 8
 
     override fun decode(): Telemetry {
-        val codecId = getData().substring(CODEC_ID_START_INDEX, CODEC_ID_START_INDEX + CODEC_ID_8_STEP).toInt(HEXADECIMAL_NR)
+        val codecId =
+            getData().substring(CODEC_ID_START_INDEX, CODEC_ID_START_INDEX + CODEC_ID_8_STEP).toInt(HEXADECIMAL_NR)
         if (codecId != CODEC_ID_8E && codecId != CODEC_ID_8) {
             throw CRCException("Invalid codec")
         }
         val dataStep = if (codecId == CODEC_ID_8) CODEC_ID_8_STEP else CODEC_ID_8E_STEP
         this.checkCrc()
-        val numberOfRecords = getData().substring(NR_OF_RECORDS_START_INDEX, NR_OF_RECORDS_START_INDEX + NUMBER_OF_RECORDS_STEP).toInt(HEXADECIMAL_NR)
-        val dataFieldLength = getData().substring(DATA_FIELD_LENGTH_START_INDEX, DATA_FIELD_LENGTH_START_INDEX + DATA_FIELD_LENGTH_STEP).toInt(HEXADECIMAL_NR)
+        val numberOfRecords =
+            getData().substring(NR_OF_RECORDS_START_INDEX, NR_OF_RECORDS_START_INDEX + NUMBER_OF_RECORDS_STEP)
+                .toInt(HEXADECIMAL_NR)
+        val dataFieldLength =
+            getData().substring(DATA_FIELD_LENGTH_START_INDEX, DATA_FIELD_LENGTH_START_INDEX + DATA_FIELD_LENGTH_STEP)
+                .toInt(HEXADECIMAL_NR)
         val avlDataStart = getData().substring(AVL_DATA_START_INDEX)
         var dataFieldPosition = 0
         val values = HashMap<Int, String>()
@@ -74,9 +80,18 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
             val longitude = calculateCoordinate(longitudeHex)
             val latitude = calculateCoordinate(latitudeHex)
             val geoHash = encodeGeoHash(latitude, longitude)
-
+            val permanentIO = PermanentIO(
+                timestampHex.toLong(HEXADECIMAL_NR),
+                priorityHex.toShort(HEXADECIMAL_NR),
+                geoHash,
+                altitudeHex.toInt(HEXADECIMAL_NR),
+                angleHex.toInt(HEXADECIMAL_NR),
+                satellitesHex.toInt(HEXADECIMAL_NR),
+                gpsSpeedHex.toInt(HEXADECIMAL_NR),
+                eventIdHex.toInt(HEXADECIMAL_NR),
+            )
         }
-        return Telemetry(1,2, values)
+        return Telemetry(1, 2, values)
     }
 
     private fun calculateCoordinate(coordinateHex: String): Double {
