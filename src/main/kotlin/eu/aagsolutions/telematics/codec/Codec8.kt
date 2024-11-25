@@ -71,23 +71,29 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
             dataFieldPosition += gpsSpeedHex.length
             val eventIdHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
             dataFieldPosition += eventIdHex.length
-            val longitudeBinary = hexToBinary(longitudeHex)
-            var longitude: Double
-            if (longitudeBinary.startsWith("1")) {
-                val longitudeStr = longitudeBinary.substring(1).toLong(2).toString()
-                longitude = -(longitudeStr.substring(0, 2) +
-                        "." +
-                        longitudeStr.substring(2)).toDouble()
-            } else {
-                val longitudeStr = longitudeHex.toLong(HEXADECIMAL_NR).toString()
-                longitude = (longitudeStr.substring(0, 2) +
-                        "." +
-                        longitudeStr.substring(2)).toDouble()
-            }
-
+            val longitude = calculateCoordinate(longitudeHex)
+            val latitude = calculateCoordinate(latitudeHex)
+            val geoHash = encodeGeoHash(latitude, longitude)
 
         }
         return Telemetry(1,2, values)
+    }
+
+    private fun calculateCoordinate(coordinateHex: String): Double {
+        val coordinateBinary = hexToBinary(coordinateHex)
+        val coordinate: Double
+        if (coordinateBinary.startsWith("1")) {
+            val longitudeStr = coordinateBinary.substring(1).toLong(2).toString()
+            coordinate = -(longitudeStr.substring(0, 2) +
+                    "." +
+                    longitudeStr.substring(2)).toDouble()
+        } else {
+            val longitudeStr = coordinateBinary.toLong(2).toString()
+            coordinate = (longitudeStr.substring(0, 2) +
+                    "." +
+                    longitudeStr.substring(2)).toDouble()
+        }
+        return coordinate
     }
 
     override fun encode(): String {
