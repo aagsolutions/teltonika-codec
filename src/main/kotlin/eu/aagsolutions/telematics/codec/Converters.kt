@@ -109,3 +109,24 @@ fun encodeGeoHash(latitude: Double, longitude: Double, precision: Int = 12): Str
     return geohash.toString()
 }
 
+/**
+ * Receive a coordinate in hex format, determine the sign,
+ * and transform it to a Double value.
+ * @param coordinateHex coordinate value in HEX
+ * @return double value
+ */
+fun calculateCoordinate(coordinateHex: String): Double {
+    val coordinateBinary = hexToBinary(coordinateHex)
+    if (coordinateBinary.startsWith("1")) {
+        val longitudeStr = coordinateBinary.substring(1).toLong(2).toString()
+        return -(longitudeStr.substring(0, 2) +
+                "." +
+                longitudeStr.substring(2)).toDouble()
+    }
+    val longitudeStr = coordinateBinary.toLong(2).toString()
+    return (longitudeStr.substring(0, 2) +
+            "." +
+            longitudeStr.substring(2)).toDouble()
+
+}
+

@@ -3,7 +3,7 @@ package eu.aagsolutions.telematics.codec
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class HexConverterKtTest {
+class ConvertersKtTest {
 
     @Test
     fun `it should encode gps coordinates to GeoHash successfully`() {

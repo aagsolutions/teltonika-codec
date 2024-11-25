@@ -94,23 +94,6 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
         return Telemetry(1, 2, values)
     }
 
-    private fun calculateCoordinate(coordinateHex: String): Double {
-        val coordinateBinary = hexToBinary(coordinateHex)
-        val coordinate: Double
-        if (coordinateBinary.startsWith("1")) {
-            val longitudeStr = coordinateBinary.substring(1).toLong(2).toString()
-            coordinate = -(longitudeStr.substring(0, 2) +
-                    "." +
-                    longitudeStr.substring(2)).toDouble()
-        } else {
-            val longitudeStr = coordinateBinary.toLong(2).toString()
-            coordinate = (longitudeStr.substring(0, 2) +
-                    "." +
-                    longitudeStr.substring(2)).toDouble()
-        }
-        return coordinate
-    }
-
     override fun encode(): String {
         TODO("Not yet implemented")
     }
