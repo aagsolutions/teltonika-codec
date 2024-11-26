@@ -58,6 +58,7 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
         var dataFieldPosition = 0
         val values = HashMap<Int, String>()
         val dataEnd = 2 * dataFieldLength - DATA_END_SUBTRACT
+        val telemetry: Telemetry = Telemetry(System.currentTimeMillis())
         while (dataFieldPosition < dataEnd) {
             val timestampHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + HEXADECIMAL_NR)
             dataFieldPosition += timestampHex.length
@@ -90,8 +91,12 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
                 gpsSpeedHex.toInt(HEXADECIMAL_NR),
                 eventIdHex.toInt(HEXADECIMAL_NR),
             )
+            telemetry.permanentIO = permanentIO
+            val totalIoElements = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
+            dataFieldPosition += totalIoElements.length
+
         }
-        return Telemetry(1, 2, values)
+        return telemetry
     }
 
     override fun encode(): String {
