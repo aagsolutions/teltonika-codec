@@ -12,6 +12,9 @@ package eu.aagsolutions.telematics.codec
 
 import eu.aagsolutions.telematics.exceptions.CRCException
 
+/**
+ * Codec12 decoder/encoder.
+ */
 class Codec12(data: String) : Codec<String>(data) {
 
     @Throws(CRCException::class)

@@ -10,6 +10,9 @@
 
 package eu.aagsolutions.telematics.model
 
+/**
+ * Data class for a single telemetry event.
+ */
 data class Telemetry(
     var deviceID: String,
     var eventTimestamp: Long,

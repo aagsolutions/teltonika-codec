@@ -10,6 +10,9 @@
 
 package eu.aagsolutions.telematics.model
 
+/**
+ * Data class for permanent IO data.
+ */
 data class PermanentIO (
     var timestamp: Long,
     var priority: Short,
