@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "eu.aagsolutions.telematics"
-version = "1.0-SNAPSHOT"
+version = "0.1.0-SNAPSHOT"
 
 val slf4jVersion = "2.0.16"
 
@@ -13,7 +13,6 @@ repositories {
 }
 
 dependencies {
-    implementation("org.slf4j:slf4j-api:$slf4jVersion")
     testImplementation(kotlin("test"))
 }
 
