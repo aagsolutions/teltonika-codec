@@ -19,23 +19,24 @@ import eu.aagsolutions.telematics.model.Telemetry
  * The main difference between the codecs is the iteration step length,
  * and also CODEC8E can have more data.
  */
-class Codec8(data: String) : Codec<List<Telemetry>>(data) {
+class Codec8(private val data: String, private val deviceID: String) : Codec<List<Telemetry>>(data) {
+    companion object {
+        private const val HEXADECIMAL_NR: Int = 16
+        private val DATA_LENGTHS = intArrayOf(2, 4, 8, HEXADECIMAL_NR)
 
-    private val HEXADECIMAL_NR: Int = 16
-    private val DATA_LENGTHS = intArrayOf(2, 4, 8, HEXADECIMAL_NR)
+        private const val CODEC_ID_8_STEP = 2
 
-    private val CODEC_ID_8_STEP = 2
-
-    private val CODEC_ID_8E_STEP = 4
-    private val NUMBER_OF_RECORDS_STEP = 2
-    private val DATA_FIELD_LENGTH_STEP = 8
-    private val DATA_END_SUBTRACT = 6
-    private val CODEC_ID_8 = 8
-    private val CODEC_ID_8E = 142
-    private val AVL_DATA_START_INDEX = 20
-    private val CODEC_ID_START_INDEX = HEXADECIMAL_NR
-    private val NR_OF_RECORDS_START_INDEX = 18
-    private val DATA_FIELD_LENGTH_START_INDEX = 8
+        private const val CODEC_ID_8E_STEP = 4
+        private const val NUMBER_OF_RECORDS_STEP = 2
+        private const val DATA_FIELD_LENGTH_STEP = 8
+        private const val DATA_END_SUBTRACT = 6
+        private const val CODEC_ID_8 = 8
+        private const val CODEC_ID_8E = 142
+        private const val AVL_DATA_START_INDEX = 20
+        private const val CODEC_ID_START_INDEX = HEXADECIMAL_NR
+        private const val NR_OF_RECORDS_START_INDEX = 18
+        private const val DATA_FIELD_LENGTH_START_INDEX = 8
+    }
 
     override fun decode(): List<Telemetry> {
         val codecId =
@@ -110,7 +111,7 @@ class Codec8(data: String) : Codec<List<Telemetry>>(data) {
                 val byteIoNumber = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
                 dataFieldPosition += byteIoNumber.length
             }
-            data.add(Telemetry(eventTimestamp, permanentIO, eventualIoValues))
+            data.add(Telemetry(deviceID, eventTimestamp, permanentIO, eventualIoValues))
         }
         return data
     }
