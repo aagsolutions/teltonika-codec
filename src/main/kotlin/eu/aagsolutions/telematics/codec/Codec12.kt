@@ -32,15 +32,9 @@ class Codec12(data: String) : Codec<String>(data) {
         val cmd = getData().toByteArray(Charsets.UTF_8)
         val cmdSize = bytesToHex(toBytes(4, cmd.size))
         val dataSize = bytesToHex(toBytes(4, 1 + 1 + 1 + 4 + cmd.size + 1))
-        val completeData =
-            "0C" + "01" + "05" + cmdSize +
-                bytesToHex(getData().toByteArray(Charsets.UTF_8)) + "01"
-
+        val completeData = "0C0105${cmdSize}${bytesToHex(getData().toByteArray(Charsets.UTF_8))}01"
         val crc = calculateCrc(hexStringToByteArray(completeData))
-
-        val completeMsgHex =
-            "00000000" + dataSize +
-                completeData + bytesToHex(toBytes(4, crc))
+        val completeMsgHex = "00000000${dataSize}${completeData}${bytesToHex(toBytes(4, crc))}"
         return completeMsgHex.uppercase()
     }
 }
