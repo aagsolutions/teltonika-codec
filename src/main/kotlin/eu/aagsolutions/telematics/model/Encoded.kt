@@ -10,12 +10,7 @@
 
 package eu.aagsolutions.telematics.model
 
-/**
- * Data class for a single telemetry event.
- */
-data class Telemetry(
-    var deviceId: String,
-    var eventTimestamp: Long,
-    var permanentIO: PermanentIO,
-    var data: Map<Int, String>,
+data class Encoded(
+    val deviceId: String,
+    val data: String,
 )

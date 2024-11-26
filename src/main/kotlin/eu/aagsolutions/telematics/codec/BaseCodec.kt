@@ -10,6 +10,8 @@
 
 package eu.aagsolutions.telematics.codec
 
+import eu.aagsolutions.telematics.model.Encoded
+
 interface BaseCodec<T> {
     /**
      * Decode HEX input.
@@ -19,5 +21,5 @@ interface BaseCodec<T> {
     /**
      * Encode to HEX.
      */
-    fun encode(): String
+    fun encode(): Encoded
 }

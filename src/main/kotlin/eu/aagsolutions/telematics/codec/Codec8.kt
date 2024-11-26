@@ -11,6 +11,7 @@
 package eu.aagsolutions.telematics.codec
 
 import eu.aagsolutions.telematics.exceptions.CRCException
+import eu.aagsolutions.telematics.model.Encoded
 import eu.aagsolutions.telematics.model.PermanentIO
 import eu.aagsolutions.telematics.model.Telemetry
 
@@ -19,13 +20,11 @@ import eu.aagsolutions.telematics.model.Telemetry
  * The main difference between the codecs is the iteration step length,
  * and also CODEC8E can have more data.
  */
-class Codec8(private val data: String, private val deviceID: String) : Codec<List<Telemetry>>(data) {
+class Codec8(data: String, deviceId: String) : Codec<List<Telemetry>>(data, deviceId) {
     companion object {
         private const val HEXADECIMAL_NR: Int = 16
         private val DATA_LENGTHS = intArrayOf(2, 4, 8, HEXADECIMAL_NR)
-
         private const val CODEC_ID_8_STEP = 2
-
         private const val CODEC_ID_8E_STEP = 4
         private const val NUMBER_OF_RECORDS_STEP = 2
         private const val DATA_FIELD_LENGTH_STEP = 8
@@ -112,7 +111,7 @@ class Codec8(private val data: String, private val deviceID: String) : Codec<Lis
                 val byteIoNumber = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
                 dataFieldPosition += byteIoNumber.length
             }
-            data.add(Telemetry(deviceID, eventTimestamp, permanentIO, eventualIoValues))
+            data.add(Telemetry(getDeviceId(), eventTimestamp, permanentIO, eventualIoValues))
         }
         if (numberOfRecords != data.size) {
             throw CRCException("Number of processed records doesn't match")
@@ -120,7 +119,7 @@ class Codec8(private val data: String, private val deviceID: String) : Codec<Lis
         return data
     }
 
-    override fun encode(): String {
+    override fun encode(): Encoded {
         TODO("Not yet implemented")
     }
 }

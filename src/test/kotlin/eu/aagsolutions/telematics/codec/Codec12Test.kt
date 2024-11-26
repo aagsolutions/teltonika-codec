@@ -1,29 +1,30 @@
 package eu.aagsolutions.telematics.codec
 
+import eu.aagsolutions.telematics.model.Encoded
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class Codec12Test {
     @Test
     fun `it should successful encode getinfo cmd`() {
-        val codec = Codec12("getinfo")
+        val codec = Codec12("getinfo", "defaultImei")
         val encoded = codec.encode()
-        val expected = "000000000000000F0C010500000007676574696E666F0100004312"
+        val expected = Encoded("defaultImei", "000000000000000F0C010500000007676574696E666F0100004312")
         assertEquals(expected, encoded)
     }
 
     @Test
     fun `it should successful encode getvin cmd`() {
-        val codec = Codec12("getvin")
+        val codec = Codec12("getvin", "defaultImei")
         val encoded = codec.encode()
-        val expected = "000000000000000e0c01050000000667657476696e010000670a".uppercase()
+        val expected = Encoded("defaultImei", "000000000000000e0c01050000000667657476696e010000670a".uppercase())
         assertEquals(expected, encoded)
     }
 
     @Test
     fun `it should succeful decode getvin cmd`() {
         val inputData = "000000000000000e0c01050000000667657476696e010000670a"
-        val codec = Codec12(inputData)
+        val codec = Codec12(inputData, "defaultImei")
         val decoded = codec.decode()
         val expected = "getvin"
         assertEquals(expected, decoded)
@@ -36,7 +37,7 @@ class Codec12Test {
                 "13A31204449323A30204449333A302041494" +
                 "E313A302041494E323A313639323420444F31" +
                 "3A3020444F323A3101000066E3"
-        val codec = Codec12(inputData)
+        val codec = Codec12(inputData, "defaultImei")
         val decoded = codec.decode()
         val expected = "DI1:1 DI2:0 DI3:0 AIN1:0 AIN2:16924 DO1:0 DO2:1"
         assertEquals(expected, decoded)
@@ -51,7 +52,7 @@ class Codec12Test {
                 "73A3020464C3A302054553A302F302055543A3020534D533A30204" +
                 "E4F4750533A303A3330204750533A31205341543A302052533A332" +
                 "052463A36352053463A31204D443A30010000C78F"
-        val codec = Codec12(inputData)
+        val codec = Codec12(inputData, "defaultImei")
         val decoded = codec.decode()
         val expected =
             "INI:2019/7/22 7:22 RTC:2019/7/22 7:53 RST:2 ERR:1 SR:0 BR:0 CF:0 " +

@@ -75,12 +75,12 @@ fun encodeGeoHash(
     var minLon = -180.0
     var maxLon = 180.0
 
-    val geohash = StringBuilder()
+    val geoHash = StringBuilder()
     var isEvenBit = true
     var bits = 0
     var base32CharIndex = 0
 
-    while (geohash.length < precision) {
+    while (geoHash.length < precision) {
         if (isEvenBit) {
             // Process longitude
             val mid = (minLon + maxLon) / 2.0
@@ -107,13 +107,13 @@ fun encodeGeoHash(
 
         if (bits == 5) {
             // Convert the bits to a character
-            geohash.append(base32Map[base32CharIndex])
+            geoHash.append(base32Map[base32CharIndex])
             // Reset bits
             bits = 0
             base32CharIndex = 0
         }
     }
-    return geohash.toString()
+    return geoHash.toString()
 }
 
 /**

@@ -13,11 +13,15 @@ package eu.aagsolutions.telematics.codec
 import eu.aagsolutions.telematics.exceptions.CRCException
 import org.slf4j.LoggerFactory
 
-abstract class Codec<T>(private val data: String) : BaseCodec<T> {
+abstract class Codec<T>(private val data: String, private val deviceId: String) : BaseCodec<T> {
     private val log = LoggerFactory.getLogger(Codec::class.java)
 
     protected fun getData(): String {
         return data
+    }
+
+    protected fun getDeviceId(): String {
+        return deviceId
     }
 
     @Throws(CRCException::class)
