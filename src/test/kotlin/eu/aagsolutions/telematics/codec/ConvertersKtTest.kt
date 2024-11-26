@@ -4,7 +4,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ConvertersKtTest {
-
     @Test
     fun `it should encode gps coordinates to GeoHash successfully`() {
         val latitude = 57.64911

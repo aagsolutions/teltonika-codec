@@ -14,7 +14,6 @@ import eu.aagsolutions.telematics.exceptions.CRCException
 import org.slf4j.LoggerFactory
 
 abstract class Codec<T>(private val data: String) : BaseCodec<T> {
-
     private val log = LoggerFactory.getLogger(Codec::class.java)
 
     protected fun getData(): String {
@@ -38,17 +37,21 @@ abstract class Codec<T>(private val data: String) : BaseCodec<T> {
         for (b in dataPartForCrc) {
             crc = crc xor (b.toInt() and 0xFF)
             for (i in 0 until 8) {
-                crc = if ((crc and 1) != 0) {
-                    (crc shr 1) xor 0xA001
-                } else {
-                    crc shr 1
-                }
+                crc =
+                    if ((crc and 1) != 0) {
+                        (crc shr 1) xor 0xA001
+                    } else {
+                        crc shr 1
+                    }
             }
         }
         return crc
     }
 
-    protected fun toBytes(length: Int, decimalValue: Int): ByteArray {
+    protected fun toBytes(
+        length: Int,
+        decimalValue: Int,
+    ): ByteArray {
         val bytes = ByteArray(length)
         for (i in 0 until length) {
             bytes[length - 1 - i] = (decimalValue shr (i * 8) and 0xFF).toByte()

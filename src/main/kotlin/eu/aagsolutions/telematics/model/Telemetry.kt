@@ -17,4 +17,5 @@ data class Telemetry(
     var deviceID: String,
     var eventTimestamp: Long,
     var permanentIO: PermanentIO,
-    var data: Map<Int, String>)
+    var data: Map<Int, String>,
+)

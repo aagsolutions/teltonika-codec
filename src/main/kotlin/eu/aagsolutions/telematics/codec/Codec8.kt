@@ -80,16 +80,17 @@ class Codec8(private val data: String, private val deviceID: String) : Codec<Lis
             val longitude = calculateCoordinate(longitudeHex)
             val latitude = calculateCoordinate(latitudeHex)
             val geoHash = encodeGeoHash(latitude, longitude)
-            val permanentIO = PermanentIO(
-                timestampHex.toLong(HEXADECIMAL_NR),
-                priorityHex.toShort(HEXADECIMAL_NR),
-                geoHash,
-                altitudeHex.toInt(HEXADECIMAL_NR),
-                angleHex.toInt(HEXADECIMAL_NR),
-                satellitesHex.toInt(HEXADECIMAL_NR),
-                gpsSpeedHex.toInt(HEXADECIMAL_NR),
-                eventIdHex.toInt(HEXADECIMAL_NR),
-            )
+            val permanentIO =
+                PermanentIO(
+                    timestampHex.toLong(HEXADECIMAL_NR),
+                    priorityHex.toShort(HEXADECIMAL_NR),
+                    geoHash,
+                    altitudeHex.toInt(HEXADECIMAL_NR),
+                    angleHex.toInt(HEXADECIMAL_NR),
+                    satellitesHex.toInt(HEXADECIMAL_NR),
+                    gpsSpeedHex.toInt(HEXADECIMAL_NR),
+                    eventIdHex.toInt(HEXADECIMAL_NR),
+                )
             val totalIoElements = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
             dataFieldPosition += totalIoElements.length
             val eventualIoValues = HashMap<Int, String>()
@@ -112,6 +113,9 @@ class Codec8(private val data: String, private val deviceID: String) : Codec<Lis
                 dataFieldPosition += byteIoNumber.length
             }
             data.add(Telemetry(deviceID, eventTimestamp, permanentIO, eventualIoValues))
+        }
+        if (numberOfRecords != data.size) {
+            throw CRCException("Number of processed records doesn't match")
         }
         return data
     }

@@ -13,7 +13,7 @@ package eu.aagsolutions.telematics.model
 /**
  * Data class for permanent IO data.
  */
-data class PermanentIO (
+data class PermanentIO(
     var timestamp: Long,
     var priority: Short,
     var geoHash: String,
@@ -21,5 +21,5 @@ data class PermanentIO (
     var angle: Int,
     var satellites: Int,
     var gpsSpeed: Int,
-    var eventId: Int
+    var eventId: Int,
 )

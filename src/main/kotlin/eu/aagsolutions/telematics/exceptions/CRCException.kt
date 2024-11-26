@@ -14,4 +14,3 @@ class CRCException : RuntimeException {
     constructor(message: String) : super(message)
     constructor(e: Throwable) : super(e)
 }
-

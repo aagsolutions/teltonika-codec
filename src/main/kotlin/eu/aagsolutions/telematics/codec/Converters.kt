@@ -19,8 +19,11 @@ fun hexStringToByteArray(hexString: String): ByteArray {
     val len = hexString.length
     val data = ByteArray(len / 2)
     for (i in 0 until len step 2) {
-        data[i / 2] = ((Character.digit(hexString[i], 16) shl 4)
-                + Character.digit(hexString[i + 1], 16)).toByte()
+        data[i / 2] =
+            (
+                (Character.digit(hexString[i], 16) shl 4) +
+                    Character.digit(hexString[i + 1], 16)
+            ).toByte()
     }
     return data
 }
@@ -61,7 +64,11 @@ fun hexToBinary(hex: String): String {
  * @param precision geohash precision
  * @return geohash representation
  */
-fun encodeGeoHash(latitude: Double, longitude: Double, precision: Int = 12): String {
+fun encodeGeoHash(
+    latitude: Double,
+    longitude: Double,
+    precision: Int = 12,
+): String {
     val base32Map = "0123456789bcdefghjkmnpqrstuvwxyz"
     var minLat = -90.0
     var maxLat = 90.0
@@ -119,14 +126,16 @@ fun calculateCoordinate(coordinateHex: String): Double {
     val coordinateBinary = hexToBinary(coordinateHex)
     if (coordinateBinary.startsWith("1")) {
         val longitudeStr = coordinateBinary.substring(1).toLong(2).toString()
-        return -(longitudeStr.substring(0, 2) +
+        return -(
+            longitudeStr.substring(0, 2) +
                 "." +
-                longitudeStr.substring(2)).toDouble()
+                longitudeStr.substring(2)
+        ).toDouble()
     }
     val longitudeStr = coordinateBinary.toLong(2).toString()
-    return (longitudeStr.substring(0, 2) +
+    return (
+        longitudeStr.substring(0, 2) +
             "." +
-            longitudeStr.substring(2)).toDouble()
-
+            longitudeStr.substring(2)
+    ).toDouble()
 }
-
