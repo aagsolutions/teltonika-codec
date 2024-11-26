@@ -1,5 +1,6 @@
 package eu.aagsolutions.telematics.codec
 
+import eu.aagsolutions.telematics.model.CmdResponse
 import eu.aagsolutions.telematics.model.Encoded
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -26,7 +27,7 @@ class Codec12Test {
         val inputData = "000000000000000e0c01050000000667657476696e010000670a"
         val codec = Codec12(inputData, "defaultImei")
         val decoded = codec.decode()
-        val expected = "getvin"
+        val expected = CmdResponse("defaultImei", "getvin")
         assertEquals(expected, decoded)
     }
 
@@ -39,7 +40,7 @@ class Codec12Test {
                 "3A3020444F323A3101000066E3"
         val codec = Codec12(inputData, "defaultImei")
         val decoded = codec.decode()
-        val expected = "DI1:1 DI2:0 DI3:0 AIN1:0 AIN2:16924 DO1:0 DO2:1"
+        val expected = CmdResponse("defaultImei", "DI1:1 DI2:0 DI3:0 AIN1:0 AIN2:16924 DO1:0 DO2:1")
         assertEquals(expected, decoded)
     }
 
@@ -55,9 +56,12 @@ class Codec12Test {
         val codec = Codec12(inputData, "defaultImei")
         val decoded = codec.decode()
         val expected =
-            "INI:2019/7/22 7:22 RTC:2019/7/22 7:53 RST:2 ERR:1 SR:0 BR:0 CF:0 " +
-                "FG:0 FL:0 TU:0/0 UT:0 SMS:0 NOGPS:0:30 GPS:1 SAT:0 RS:3 RF:65 " +
-                "SF:1 MD:0"
+            CmdResponse(
+                "defaultImei",
+                "INI:2019/7/22 7:22 RTC:2019/7/22 7:53 RST:2 ERR:1 SR:0 BR:0 CF:0 " +
+                    "FG:0 FL:0 TU:0/0 UT:0 SMS:0 NOGPS:0:30 GPS:1 SAT:0 RS:3 RF:65 " +
+                    "SF:1 MD:0",
+            )
         assertEquals(expected, decoded)
     }
 }

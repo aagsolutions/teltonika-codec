@@ -11,14 +11,15 @@
 package eu.aagsolutions.telematics.codec
 
 import eu.aagsolutions.telematics.exceptions.CRCException
+import eu.aagsolutions.telematics.model.CmdResponse
 import eu.aagsolutions.telematics.model.Encoded
 
 /**
  * Codec12 decoder/encoder.
  */
-class Codec12(data: String, deviceId: String) : Codec<String>(data, deviceId) {
+class Codec12(data: String, deviceId: String) : Codec<CmdResponse>(data, deviceId) {
     @Throws(CRCException::class)
-    override fun decode(): String {
+    override fun decode(): CmdResponse {
         val codecId = getData().substring(16, 18).toInt(16)
         if (codecId != 12) {
             throw CRCException("Invalid codec")
@@ -26,7 +27,7 @@ class Codec12(data: String, deviceId: String) : Codec<String>(data, deviceId) {
         checkCrc()
         val dataSize = getData().substring(22, 30).toInt(16)
         val rsp = hexStringToByteArray(getData().substring(30, 30 + dataSize * 2))
-        return String(rsp, Charsets.UTF_8)
+        return CmdResponse(getDeviceId(), String(rsp, Charsets.UTF_8))
     }
 
     override fun encode(): Encoded {
