@@ -8,27 +8,10 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.model
 
-fun hexStringToByteArray(hexString: String): ByteArray {
-    val len = hexString.length
-    val data = ByteArray(len / 2)
-    for (i in 0 until len step 2) {
-        data[i / 2] = ((Character.digit(hexString[i], 16) shl 4)
-                + Character.digit(hexString[i + 1], 16)).toByte()
-    }
-    return data
-}
-
-
-fun bytesToHex(bytes: ByteArray): String {
-    val hexString = StringBuilder()
-    for (aByte in bytes) {
-        val hex = (aByte.toInt() and 0xFF).toString(16)
-        if (hex.length == 1) {
-            hexString.append('0')
-        }
-        hexString.append(hex)
-    }
-    return hexString.toString()
-}
+data class Telemetry(
+    var deviceID: String,
+    var eventTimestamp: Long,
+    var permanentIO: PermanentIO,
+    var data: Map<Int, String>)

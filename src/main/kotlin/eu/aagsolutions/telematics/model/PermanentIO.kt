@@ -8,16 +8,15 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.model
 
-interface BaseCodec<T> {
-    /**
-     * Decode HEX input.
-     */
-    fun decode(): T
-
-    /**
-     * Encode to HEX.
-     */
-    fun encode(): String
-}
+data class PermanentIO (
+    var timestamp: Long,
+    var priority: Short,
+    var geoHash: String,
+    var altitude: Int,
+    var angle: Int,
+    var satellites: Int,
+    var gpsSpeed: Int,
+    var eventId: Int
+)
