@@ -31,9 +31,6 @@ class Codec8(data: String) : Codec<List<Telemetry>>(data) {
     private val DATA_FIELD_LENGTH_STEP = 8
     private val DATA_END_SUBTRACT = 6
     private val CODEC_ID_8 = 8
-    private val SSF_FLAGS_ID = 517
-    private val CSF_FLAGS_ID = 518
-    private val ISF_FLAGS_ID = 519
     private val CODEC_ID_8E = 142
     private val AVL_DATA_START_INDEX = 20
     private val CODEC_ID_START_INDEX = HEXADECIMAL_NR
