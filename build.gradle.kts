@@ -7,7 +7,6 @@ plugins {
 }
 
 group = "eu.aagsolutions.telematics"
-version = "0.1.0-SNAPSHOT"
 
 val slf4jVersion = "2.0.16"
 
