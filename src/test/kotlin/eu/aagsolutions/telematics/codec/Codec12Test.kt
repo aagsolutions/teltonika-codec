@@ -6,7 +6,7 @@ import kotlin.test.assertEquals
 class Codec12Test {
 
     @Test
-    fun shouldSuccessfulEncodeGetInfoCmd() {
+    fun `it should successful encode getinfo cmd`() {
         val codec = Codec12("getinfo")
         val encoded = codec.encode()
         val expected = "000000000000000F0C010500000007676574696E666F0100004312"
@@ -14,7 +14,7 @@ class Codec12Test {
     }
 
     @Test
-    fun shouldSuccessfulEncodeGetVinCmd() {
+    fun `it should successful encode getvin cmd`() {
         val codec = Codec12("getvin")
         val encoded = codec.encode()
         val expected = "000000000000000e0c01050000000667657476696e010000670a".uppercase()
@@ -22,7 +22,7 @@ class Codec12Test {
     }
 
     @Test
-    fun shouldSuccefulDecodeGetVinCmd() {
+    fun `it should succeful decode getvin cmd`() {
         val inputData = "000000000000000e0c01050000000667657476696e010000670a"
         val codec = Codec12(inputData)
         val decoded = codec.decode()
@@ -31,7 +31,7 @@ class Codec12Test {
     }
 
     @Test
-    fun shouldSuccessfulDecodeGetIoRsp() {
+    fun `it should successful decode getio cmd response`() {
         val inputData = "00000000000000370C01060000002F44493" +
                 "13A31204449323A30204449333A302041494" +
                 "E313A302041494E323A313639323420444F31" +
@@ -43,16 +43,7 @@ class Codec12Test {
     }
 
     @Test
-    fun shouldSuccessfulDecodeGetInfoCmd() {
-        val inputData = "000000000000000F0C010500000007676574696E666F0100004312"
-        val codec = Codec12(inputData)
-        val decoded = codec.decode()
-        val expected = "getinfo"
-        assertEquals(expected, decoded)
-    }
-
-    @Test
-    fun shouldSuccessfulDecodeGetInfoRsp() {
+    fun `it should successful decode getinfo cmd response`() {
         val inputData = "00000000000000900C010600000088494E493A323031392F372F323" +
                 "220373A3232205254433A323031392F372F323220373A353320525" +
                 "3543A32204552523A312053523A302042523A302043463A3020464" +
