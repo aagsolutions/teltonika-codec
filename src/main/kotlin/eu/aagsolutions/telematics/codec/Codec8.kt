@@ -19,9 +19,9 @@ import eu.aagsolutions.telematics.model.Telemetry
  * The main difference between the codecs is the iteration step length,
  * and also CODEC8E can have more data.
  */
-class Codec8(data: String) : Codec<Telemetry>(data) {
+class Codec8(data: String) : Codec<List<Telemetry>>(data) {
 
-    private val HEXADECIMAL_NR = 16
+    private val HEXADECIMAL_NR: Int = 16
     private val DATA_LENGTHS = intArrayOf(2, 4, 8, HEXADECIMAL_NR)
 
     private val CODEC_ID_8_STEP = 2
@@ -40,7 +40,7 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
     private val NR_OF_RECORDS_START_INDEX = 18
     private val DATA_FIELD_LENGTH_START_INDEX = 8
 
-    override fun decode(): Telemetry {
+    override fun decode(): List<Telemetry> {
         val codecId =
             getData().substring(CODEC_ID_START_INDEX, CODEC_ID_START_INDEX + CODEC_ID_8_STEP).toInt(HEXADECIMAL_NR)
         if (codecId != CODEC_ID_8E && codecId != CODEC_ID_8) {
@@ -56,9 +56,10 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
                 .toInt(HEXADECIMAL_NR)
         val avlDataStart = getData().substring(AVL_DATA_START_INDEX)
         var dataFieldPosition = 0
-        val values = HashMap<Int, String>()
+
         val dataEnd = 2 * dataFieldLength - DATA_END_SUBTRACT
-        val telemetry: Telemetry = Telemetry(System.currentTimeMillis())
+        val eventTimestamp = System.currentTimeMillis()
+        val data: MutableList<Telemetry> = ArrayList()
         while (dataFieldPosition < dataEnd) {
             val timestampHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + HEXADECIMAL_NR)
             dataFieldPosition += timestampHex.length
@@ -91,12 +92,30 @@ class Codec8(data: String) : Codec<Telemetry>(data) {
                 gpsSpeedHex.toInt(HEXADECIMAL_NR),
                 eventIdHex.toInt(HEXADECIMAL_NR),
             )
-            telemetry.permanentIO = permanentIO
             val totalIoElements = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
             dataFieldPosition += totalIoElements.length
+            val eventualIoValues = HashMap<Int, String>()
+            for (dataLength in DATA_LENGTHS) {
+                val byteIoNumber = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
+                val byteIoNumberParsed = byteIoNumber.toInt(HEXADECIMAL_NR)
+                dataFieldPosition += byteIoNumber.length
 
+                for (i in 0..<byteIoNumberParsed) {
+                    val key = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
+                    dataFieldPosition += key.length
+                    val value = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataLength)
+                    dataFieldPosition += value.length
+                    val keyValue: Int = key.toInt(HEXADECIMAL_NR)
+                    eventualIoValues[keyValue] = value
+                }
+            }
+            if (codecId == CODEC_ID_8E) {
+                val byteIoNumber = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
+                dataFieldPosition += byteIoNumber.length
+            }
+            data.add(Telemetry(eventTimestamp, permanentIO, eventualIoValues))
         }
-        return telemetry
+        return data
     }
 
     override fun encode(): String {

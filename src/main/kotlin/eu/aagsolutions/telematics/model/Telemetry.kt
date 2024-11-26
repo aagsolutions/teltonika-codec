@@ -12,7 +12,5 @@ package eu.aagsolutions.telematics.model
 
 data class Telemetry(
     var eventTimestamp: Long,
-    var permanentIO: PermanentIO?,
-    var data: Map<Int, String>?,) {
-    constructor(eventTimestamp: Long): this(eventTimestamp, null, null)
-}
+    var permanentIO: PermanentIO,
+    var data: Map<Int, String>)
