@@ -9,7 +9,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Setup git
-        shell: |
+        run: |
           git config --global user.name atdi
           git config --global user.email aurel.avramescu@gmail.com
       - name: Setup Gradle
