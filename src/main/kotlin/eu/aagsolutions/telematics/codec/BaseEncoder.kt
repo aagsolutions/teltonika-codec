@@ -12,12 +12,7 @@ package eu.aagsolutions.telematics.codec
 
 import eu.aagsolutions.telematics.model.Encoded
 
-interface BaseCodec<T> {
-    /**
-     * Decode HEX input.
-     */
-    fun decode(): T
-
+interface BaseEncoder<T> {
     /**
      * Encode to HEX.
      */

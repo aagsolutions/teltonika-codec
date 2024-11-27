@@ -10,27 +10,13 @@
 
 package eu.aagsolutions.telematics.codec
 
-import eu.aagsolutions.telematics.exceptions.CRCException
-
-abstract class Codec<T>(private val data: String, private val deviceId: String) : BaseCodec<T> {
-    protected fun getData(): String {
+abstract class Encoder<T>(private val data: T, private val deviceId: String) : BaseEncoder<T> {
+    protected fun getData(): T {
         return data
     }
 
     protected fun getDeviceId(): String {
         return deviceId
-    }
-
-    @Throws(CRCException::class)
-    fun checkCrc() {
-        val dataPartLengthCrc = data.substring(8, 16).toInt(16)
-        val dataPartForCrcStr = data.substring(16, 16 + 2 * dataPartLengthCrc)
-        val dataPartForCrc = hexStringToByteArray(dataPartForCrcStr)
-        val crc = calculateCrc(dataPartForCrc)
-        val crc16ArcFromRecord = data.substring(16 + dataPartForCrc.size * 2, 24 + dataPartForCrc.size * 2)
-        if (!crc16ArcFromRecord.equals(bytesToHex(toBytes(4, crc)), ignoreCase = true)) {
-            throw CRCException("Invalid CRC for $data")
-        }
     }
 
     fun calculateCrc(dataPartForCrc: ByteArray): Int {

@@ -14,7 +14,7 @@ import eu.aagsolutions.telematics.model.Telemetry
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class Codec8Test {
+class Codec8DecoderTest {
     private val codec8ex6values =
         "000000000000040b8e06000001881aa960c0000804fad31f4eeb98003900440d001c00000028001e00ef0100f00100" +
             "710000512400522c00eb00028d00029601038201038401038b00038e00039600039700039c0003a00003a10003ac01" +
@@ -42,7 +42,7 @@ class Codec8Test {
 
     @Test
     fun `it should successful decode a message with 6 records`() {
-        val codec8 = Codec8(codec8ex6values, "defaultImei")
+        val codec8 = Codec8Decoder(codec8ex6values, "defaultImei")
         val values: List<Telemetry> = codec8.decode()
         assertEquals(6, values.size)
     }

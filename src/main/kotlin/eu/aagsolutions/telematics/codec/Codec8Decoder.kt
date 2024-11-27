@@ -11,16 +11,15 @@
 package eu.aagsolutions.telematics.codec
 
 import eu.aagsolutions.telematics.exceptions.CRCException
-import eu.aagsolutions.telematics.model.Encoded
 import eu.aagsolutions.telematics.model.PermanentIO
 import eu.aagsolutions.telematics.model.Telemetry
 
 /**
- * Class for decoding/encoding CODEC8 and CODEC8E.
- * The main difference between the codecs is the iteration step length,
+ * Class for decoding CODEC8 and CODEC8E.
+ * The main difference between CODEC8 and CODEC8E is the iteration step length,
  * and also CODEC8E can have more data.
  */
-class Codec8(data: String, deviceId: String) : Codec<List<Telemetry>>(data, deviceId) {
+class Codec8Decoder(data: String, deviceId: String) : Decoder<List<Telemetry>>(data, deviceId) {
     companion object {
         private const val HEXADECIMAL_NR: Int = 16
         private val DATA_LENGTHS = intArrayOf(2, 4, 8, HEXADECIMAL_NR)
@@ -44,7 +43,7 @@ class Codec8(data: String, deviceId: String) : Codec<List<Telemetry>>(data, devi
             throw CRCException("Invalid codec")
         }
         val dataStep = if (codecId == CODEC_ID_8) CODEC_ID_8_STEP else CODEC_ID_8E_STEP
-        this.checkCrc()
+        checkCrc(getData())
         val numberOfRecords =
             getData().substring(NR_OF_RECORDS_START_INDEX, NR_OF_RECORDS_START_INDEX + NUMBER_OF_RECORDS_STEP)
                 .toInt(HEXADECIMAL_NR)
@@ -117,9 +116,5 @@ class Codec8(data: String, deviceId: String) : Codec<List<Telemetry>>(data, devi
             throw CRCException("Number of processed records doesn't match")
         }
         return data
-    }
-
-    override fun encode(): Encoded {
-        TODO("Not yet implemented")
     }
 }
