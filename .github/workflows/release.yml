@@ -15,4 +15,4 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Release
-        run: ./gradlew release -Prelease.useAutomaticVersion=true -Prelease.releaseVersion=0.1.0 -Prelease.newVersion=0.1.1-SNAPSHOT
+        run: ./gradlew release -Prelease.useAutomaticVersion=true
