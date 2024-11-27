@@ -10,9 +10,11 @@
 
 package eu.aagsolutions.telematics.codec
 
+import eu.aagsolutions.telematics.exceptions.CRCException
 import eu.aagsolutions.telematics.model.Telemetry
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class Codec8DecoderTest {
     private val codec8ex6values =
@@ -45,5 +47,21 @@ class Codec8DecoderTest {
         val codec8 = Codec8Decoder()
         val values: List<Telemetry> = codec8.decode(codec8ex6values, "defaultImei")
         assertEquals(6, values.size)
+    }
+
+    @Test
+    fun `it should throw CRCException`() {
+        val message =
+            "000000000000007408010000018721a65e6000080444561f4e9576003a00e90e0000001a09ef01f0011505c8004501" +
+                "510052005900eb000cb5000cb6000942397f43107f44000011ffe512002113fffd5400965503c45a000073023a04f1" +
+                "0000665910000afbdd570039c7cc7b813000000184000000681300002b010000b421"
+        val codec8 = Codec8Decoder()
+        val exception =
+            assertFailsWith<CRCException>(
+                block = {
+                    codec8.decode(message, "11111111111")
+                },
+            )
+        assertEquals("Invalid CRC for $message", exception.message)
     }
 }
