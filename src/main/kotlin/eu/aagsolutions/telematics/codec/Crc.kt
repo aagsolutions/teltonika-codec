@@ -12,6 +12,11 @@ package eu.aagsolutions.telematics.codec
 
 import eu.aagsolutions.telematics.exceptions.CRCException
 
+/**
+ * Check if message CRC is valid.
+ * @param encodedData
+ * @throws CRCException
+ */
 @Throws(CRCException::class)
 fun checkCrc(encodedData: String) {
     val dataPartLengthCrc = encodedData.substring(8, 16).toInt(16)
@@ -24,6 +29,10 @@ fun checkCrc(encodedData: String) {
     }
 }
 
+/**
+ * Calculate @see <a href="https://wiki.teltonika-gps.com/view/Codec#CRC-16">CRC-16</a>.
+ * @param dataPartForCrc the byte array from the message used for CRC calculation
+ */
 fun calculateCrc(dataPartForCrc: ByteArray): Int {
     var crc = 0
     for (b in dataPartForCrc) {
