@@ -16,7 +16,7 @@ import kotlin.test.assertEquals
 
 class Codec12DecoderTest {
     @Test
-    fun `it should succeful decode getvin cmd`() {
+    fun `it should successful decode getvin cmd`() {
         val inputData = "000000000000000e0c01050000000667657476696e010000670a"
         val codec = Codec12Decoder()
         val decoded = codec.decode(inputData, "defaultImei")
