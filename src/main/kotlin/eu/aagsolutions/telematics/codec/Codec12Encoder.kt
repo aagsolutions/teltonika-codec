@@ -15,14 +15,17 @@ import eu.aagsolutions.telematics.model.Encoded
 /**
  * Codec12 encoder.
  */
-class Codec12Encoder(data: String, deviceId: String) : Encoder<String>(data, deviceId) {
-    override fun encode(): Encoded {
-        val cmd = getData().toByteArray(Charsets.UTF_8)
+class Codec12Encoder : BaseEncoder<String> {
+    override fun encode(
+        data: String,
+        deviceId: String,
+    ): Encoded {
+        val cmd = data.toByteArray(Charsets.UTF_8)
         val cmdSize = bytesToHex(toBytes(4, cmd.size))
         val dataSize = bytesToHex(toBytes(4, 1 + 1 + 1 + 4 + cmd.size + 1))
-        val completeData = "0C0105${cmdSize}${bytesToHex(getData().toByteArray(Charsets.UTF_8))}01"
+        val completeData = "0C0105${cmdSize}${bytesToHex(data.toByteArray(Charsets.UTF_8))}01"
         val crc = calculateCrc(hexStringToByteArray(completeData))
         val completeMsgHex = "00000000${dataSize}${completeData}${bytesToHex(toBytes(4, crc))}"
-        return Encoded(getDeviceId(), completeMsgHex.uppercase())
+        return Encoded(deviceId, completeMsgHex.uppercase())
     }
 }

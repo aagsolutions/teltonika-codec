@@ -16,16 +16,19 @@ import eu.aagsolutions.telematics.model.CmdResponse
 /**
  * Codec12 decoder.
  */
-class Codec12Decoder(data: String, deviceId: String) : Decoder<CmdResponse>(data, deviceId) {
+class Codec12Decoder : BaseDecoder<CmdResponse> {
     @Throws(CRCException::class)
-    override fun decode(): CmdResponse {
-        val codecId = getData().substring(16, 18).toInt(16)
+    override fun decode(
+        data: String,
+        deviceId: String,
+    ): CmdResponse {
+        val codecId = data.substring(16, 18).toInt(16)
         if (codecId != 12) {
             throw CRCException("Invalid codec")
         }
-        checkCrc(getData())
-        val dataSize = getData().substring(22, 30).toInt(16)
-        val rsp = hexStringToByteArray(getData().substring(30, 30 + dataSize * 2))
-        return CmdResponse(getDeviceId(), String(rsp, Charsets.UTF_8))
+        checkCrc(data)
+        val dataSize = data.substring(22, 30).toInt(16)
+        val rsp = hexStringToByteArray(data.substring(30, 30 + dataSize * 2))
+        return CmdResponse(deviceId, String(rsp, Charsets.UTF_8))
     }
 }

@@ -14,5 +14,8 @@ interface BaseDecoder<T> {
     /**
      * Decode HEX input.
      */
-    fun decode(): T
+    fun decode(
+        data: String,
+        deviceId: String,
+    ): T
 }

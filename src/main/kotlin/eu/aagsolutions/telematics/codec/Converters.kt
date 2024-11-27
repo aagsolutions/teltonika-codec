@@ -171,7 +171,7 @@ fun isNumeric(hexString: String?): Boolean {
 }
 
 /**
- * Utility method when TPC/IP or UDP server are used to
+ * Utility method when TPC/IP or UDP socket server are used to
  * check if the message represents a Teltonika deviceID.
  * @param hexIMEI the deviceID in hexadecimal.
  */

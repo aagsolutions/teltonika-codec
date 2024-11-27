@@ -42,8 +42,8 @@ class Codec8DecoderTest {
 
     @Test
     fun `it should successful decode a message with 6 records`() {
-        val codec8 = Codec8Decoder(codec8ex6values, "defaultImei")
-        val values: List<Telemetry> = codec8.decode()
+        val codec8 = Codec8Decoder()
+        val values: List<Telemetry> = codec8.decode(codec8ex6values, "defaultImei")
         assertEquals(6, values.size)
     }
 }

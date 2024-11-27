@@ -19,7 +19,7 @@ import eu.aagsolutions.telematics.model.Telemetry
  * The main difference between CODEC8 and CODEC8E is the iteration step length,
  * and also CODEC8E can have more data.
  */
-class Codec8Decoder(data: String, deviceId: String) : Decoder<List<Telemetry>>(data, deviceId) {
+class Codec8Decoder : BaseDecoder<List<Telemetry>> {
     companion object {
         private const val HEXADECIMAL_NR: Int = 16
         private val DATA_LENGTHS = intArrayOf(2, 4, 8, HEXADECIMAL_NR)
@@ -36,21 +36,24 @@ class Codec8Decoder(data: String, deviceId: String) : Decoder<List<Telemetry>>(d
         private const val DATA_FIELD_LENGTH_START_INDEX = 8
     }
 
-    override fun decode(): List<Telemetry> {
+    override fun decode(
+        data: String,
+        deviceId: String,
+    ): List<Telemetry> {
         val codecId =
-            getData().substring(CODEC_ID_START_INDEX, CODEC_ID_START_INDEX + CODEC_ID_8_STEP).toInt(HEXADECIMAL_NR)
+            data.substring(CODEC_ID_START_INDEX, CODEC_ID_START_INDEX + CODEC_ID_8_STEP).toInt(HEXADECIMAL_NR)
         if (codecId != CODEC_ID_8E && codecId != CODEC_ID_8) {
             throw CRCException("Invalid codec")
         }
         val dataStep = if (codecId == CODEC_ID_8) CODEC_ID_8_STEP else CODEC_ID_8E_STEP
-        checkCrc(getData())
+        checkCrc(data)
         val numberOfRecords =
-            getData().substring(NR_OF_RECORDS_START_INDEX, NR_OF_RECORDS_START_INDEX + NUMBER_OF_RECORDS_STEP)
+            data.substring(NR_OF_RECORDS_START_INDEX, NR_OF_RECORDS_START_INDEX + NUMBER_OF_RECORDS_STEP)
                 .toInt(HEXADECIMAL_NR)
         val dataFieldLength =
-            getData().substring(DATA_FIELD_LENGTH_START_INDEX, DATA_FIELD_LENGTH_START_INDEX + DATA_FIELD_LENGTH_STEP)
+            data.substring(DATA_FIELD_LENGTH_START_INDEX, DATA_FIELD_LENGTH_START_INDEX + DATA_FIELD_LENGTH_STEP)
                 .toInt(HEXADECIMAL_NR)
-        val avlDataStart = getData().substring(AVL_DATA_START_INDEX)
+        val avlDataStart = data.substring(AVL_DATA_START_INDEX)
         var dataFieldPosition = 0
 
         val dataEnd = 2 * dataFieldLength - DATA_END_SUBTRACT
@@ -110,7 +113,7 @@ class Codec8Decoder(data: String, deviceId: String) : Decoder<List<Telemetry>>(d
                 val byteIoNumber = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
                 dataFieldPosition += byteIoNumber.length
             }
-            data.add(Telemetry(getDeviceId(), eventTimestamp, permanentIO, eventualIoValues))
+            data.add(Telemetry(deviceId, eventTimestamp, permanentIO, eventualIoValues))
         }
         if (numberOfRecords != data.size) {
             throw CRCException("Number of processed records doesn't match")

@@ -18,8 +18,8 @@ class Codec12DecoderTest {
     @Test
     fun `it should succeful decode getvin cmd`() {
         val inputData = "000000000000000e0c01050000000667657476696e010000670a"
-        val codec = Codec12Decoder(inputData, "defaultImei")
-        val decoded = codec.decode()
+        val codec = Codec12Decoder()
+        val decoded = codec.decode(inputData, "defaultImei")
         val expected = CmdResponse("defaultImei", "getvin")
         assertEquals(expected, decoded)
     }
@@ -31,8 +31,8 @@ class Codec12DecoderTest {
                 "13A31204449323A30204449333A302041494" +
                 "E313A302041494E323A313639323420444F31" +
                 "3A3020444F323A3101000066E3"
-        val codec = Codec12Decoder(inputData, "defaultImei")
-        val decoded = codec.decode()
+        val codec = Codec12Decoder()
+        val decoded = codec.decode(inputData, "defaultImei")
         val expected = CmdResponse("defaultImei", "DI1:1 DI2:0 DI3:0 AIN1:0 AIN2:16924 DO1:0 DO2:1")
         assertEquals(expected, decoded)
     }
@@ -46,8 +46,8 @@ class Codec12DecoderTest {
                 "73A3020464C3A302054553A302F302055543A3020534D533A30204" +
                 "E4F4750533A303A3330204750533A31205341543A302052533A332" +
                 "052463A36352053463A31204D443A30010000C78F"
-        val codec = Codec12Decoder(inputData, "defaultImei")
-        val decoded = codec.decode()
+        val codec = Codec12Decoder()
+        val decoded = codec.decode(inputData, "defaultImei")
         val expected =
             CmdResponse(
                 "defaultImei",

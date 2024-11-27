@@ -16,5 +16,8 @@ interface BaseEncoder<T> {
     /**
      * Encode to HEX.
      */
-    fun encode(): Encoded
+    fun encode(
+        data: T,
+        deviceId: String,
+    ): Encoded
 }
