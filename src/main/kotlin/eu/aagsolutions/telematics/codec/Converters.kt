@@ -139,3 +139,47 @@ fun calculateCoordinate(coordinateHex: String): Double {
             longitudeStr.substring(2)
     ).toDouble()
 }
+
+/**
+ * Convert imei numberic ID to a string.
+ * @param hexIMEI imei id represented in hexadecimal.
+ */
+fun convertIMEIToASCII(hexIMEI: String): String {
+    return String(
+        hexStringToByteArray(
+            hexIMEI.substring(
+                4,
+            ),
+        ),
+    )
+}
+
+/**
+ * Check if contains only numbers.
+ * @param hexString
+ */
+fun isNumeric(hexString: String?): Boolean {
+    if (hexString.isNullOrEmpty()) {
+        return false
+    }
+    for (c in hexString.toCharArray()) {
+        if (!Character.isDigit(c)) {
+            return false
+        }
+    }
+    return true
+}
+
+/**
+ * Utility method when TPC/IP or UDP server are used to
+ * check if the message represents a Teltonika deviceID.
+ * @param hexIMEI the deviceID in hexadecimal.
+ */
+fun isIMEI(hexIMEI: String): Boolean {
+    val imeiLength = hexIMEI.substring(0, 4).toInt(16)
+    if (imeiLength != hexIMEI.substring(4).length / 2) {
+        return false
+    }
+    val asciiIMEI = convertIMEIToASCII(hexIMEI)
+    return isNumeric(asciiIMEI) && asciiIMEI.length == 15
+}
