@@ -18,31 +18,4 @@ abstract class Encoder<T>(private val data: T, private val deviceId: String) : B
     protected fun getDeviceId(): String {
         return deviceId
     }
-
-    fun calculateCrc(dataPartForCrc: ByteArray): Int {
-        var crc = 0
-        for (b in dataPartForCrc) {
-            crc = crc xor (b.toInt() and 0xFF)
-            for (i in 0 until 8) {
-                crc =
-                    if ((crc and 1) != 0) {
-                        (crc shr 1) xor 0xA001
-                    } else {
-                        crc shr 1
-                    }
-            }
-        }
-        return crc
-    }
-
-    protected fun toBytes(
-        length: Int,
-        decimalValue: Int,
-    ): ByteArray {
-        val bytes = ByteArray(length)
-        for (i in 0 until length) {
-            bytes[length - 1 - i] = (decimalValue shr (i * 8) and 0xFF).toByte()
-        }
-        return bytes
-    }
 }
