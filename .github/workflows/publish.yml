@@ -1,9 +1,12 @@
 name: Publish
 
 on:
-  push:
-    tags:
-      - '*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Choose a tag'
+        required: true
+        type: string
 
 jobs:
   build:
@@ -11,6 +14,8 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag_name }}
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
       - name: Release
