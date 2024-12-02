@@ -40,7 +40,7 @@ publishing {
         }
     }
     publications {
-        create<MavenPublication>("maven") {
+        create<MavenPublication>("mavenJava") {
             from(components["java"])
             pom {
                 groupId = "eu.aagsolutions.telematics"
@@ -55,8 +55,8 @@ publishing {
                 }
                 scm {
                     url.set("https://github.com/atdi/teltonika-codec")
-                    connection.set("scm:git://github.com/atdi/teltonika-codec.git")
-                    developerConnection.set("scm:git://github.com/atdi/teltonika-codec.git")
+                    connection.set("scm:git:git://github.com/atdi/teltonika-codec.git")
+                    developerConnection.set("scm:git:ssh://github.com/atdi/teltonika-codec.git")
                 }
                 developers {
                     developer {
@@ -69,6 +69,14 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    useInMemoryPgpKeys(
+        System.getenv("GPG_PRIVATE_KEY"),
+        System.getenv("GPG_PRIVATE_KEY_PASSWORD")
+    )
+    sign(publishing.publications.getByName("mavenJava"))
 }
 
 dependencies {
