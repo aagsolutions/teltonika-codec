@@ -24,5 +24,22 @@ Those values are:
 - eventId: Int
  
 
-## How to use the library
+## How to use it
+
+Gradle:
+```kotlin
+implementation("eu.aagsolutions.telematics:teltonika-codec:0.1.0")
+```
+
+Maven:
+```xml
+<dependency>
+    <groupId>eu.aagsolutions.telematics</groupId>
+    <artifactId>teltonika-codec</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
+
+For a complete example please have a look to following demo project using TCP/IP sockets:
+[Teltonika demo TCP/IP server](https://github.com/atdi/teltonika-demo-server)
 
