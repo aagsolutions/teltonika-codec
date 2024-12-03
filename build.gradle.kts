@@ -4,10 +4,11 @@ plugins {
     kotlin("jvm") version "2.0.21"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
     id("net.researchgate.release") version "3.0.2"
-    id("maven-publish")
+    id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.4"
     id("signing")
 }
 
+description = "Small library for decoding/encoding Teltonika CODEC8, CODEC8E and CODEC12"
 group = "eu.aagsolutions.telematics"
 
 val slf4jVersion = "2.0.16"
@@ -28,44 +29,33 @@ java {
     withSourcesJar()
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "CentralMaven"
-            url = uri("https://central.sonatype.com/publishing/deployments/")
-            credentials {
-                username = System.getenv("MAVEN_USERNAME")
-                password = System.getenv("MAVEN_PASSWORD")
+centralPortal {
+    username = System.getenv("MAVEN_USERNAME")
+    password = System.getenv("MAVEN_PASSWORD")
+
+    publishingType = net.thebugmc.gradle.sonatypepublisher.PublishingType.AUTOMATIC
+    pom {
+        group = "eu.aagsolutions.telematics"
+        name = "teltonika-codec"
+        url = "https://github.com/atdi/teltonika-codec"
+        packaging = "jar"
+        licenses {
+            license {
+                name.set("MIT License")
+                url.set("https://opensource.org/licenses/MIT")
             }
         }
-    }
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-            pom {
-                groupId = "eu.aagsolutions.telematics"
-                name = "teltonika-codec"
-                url = "https://github.com/atdi/teltonika-codec"
-                packaging = "jar"
-                licenses {
-                    license {
-                        name.set("MIT License")
-                        url.set("https://opensource.org/licenses/MIT")
-                    }
-                }
-                scm {
-                    url.set("https://github.com/atdi/teltonika-codec")
-                    connection.set("scm:git:git://github.com/atdi/teltonika-codec.git")
-                    developerConnection.set("scm:git:ssh://github.com/atdi/teltonika-codec.git")
-                }
-                developers {
-                    developer {
-                        id.set("atdi")
-                        name.set("Aurel Avramescu")
-                        email.set("aurel.avramescu@gmail.com")
-                        organization.set("https://www.aagsolutions.eu")
-                    }
-                }
+        scm {
+            url.set("https://github.com/atdi/teltonika-codec")
+            connection.set("scm:git:git://github.com/atdi/teltonika-codec.git")
+            developerConnection.set("scm:git:ssh://github.com/atdi/teltonika-codec.git")
+        }
+        developers {
+            developer {
+                id.set("atdi")
+                name.set("Aurel Avramescu")
+                email.set("aurel.avramescu@gmail.com")
+                organization.set("https://www.aagsolutions.eu")
             }
         }
     }
@@ -76,7 +66,6 @@ signing {
         System.getenv("GPG_PRIVATE_KEY"),
         System.getenv("GPG_PRIVATE_KEY_PASSWORD"),
     )
-    sign(publishing.publications.getByName("mavenJava"))
 }
 
 dependencies {
