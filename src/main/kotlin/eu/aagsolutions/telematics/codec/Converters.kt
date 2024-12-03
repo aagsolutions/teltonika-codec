@@ -50,12 +50,11 @@ fun bytesToHex(bytes: ByteArray): String {
  * @param hex hexadecimal representation
  * @return binary representation
  */
-fun hexToBinary(hex: String): String {
-    return hex.map {
+fun hexToBinary(hex: String): String =
+    hex.map {
         val binary = Integer.toBinaryString(it.toString().toInt(16))
         String.format("%4s", binary).replace(' ', '0')
     }.joinToString("")
-}
 
 /**
  * Encode latitude/longitude to geohash.
@@ -144,15 +143,14 @@ fun calculateCoordinate(coordinateHex: String): Double {
  * Convert imei numberic ID to a string.
  * @param hexIMEI imei id represented in hexadecimal.
  */
-fun convertIMEIToASCII(hexIMEI: String): String {
-    return String(
+fun convertIMEIToASCII(hexIMEI: String): String =
+    String(
         hexStringToByteArray(
             hexIMEI.substring(
                 4,
             ),
         ),
     )
-}
 
 /**
  * Check if contains only numbers.
