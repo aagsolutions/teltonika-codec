@@ -13,9 +13,29 @@ package eu.aagsolutions.telematics.codec
 import eu.aagsolutions.telematics.model.Encoded
 
 /**
- * Codec12 encoder.
+ * A specialized implementation of the `BaseEncoder` interface for encoding data using the Codec 12 protocol.
+ * This encoder processes a given string into an encoded message in hexadecimal format, adhering to the
+ * structure defined by the Codec 12 specification.
+ *
+ * The encoding process transforms input data into a hexadecimal message that includes metadata about the
+ * command's size, data payload structure, and CRC for message integrity verification.
+ *
+ * The resulting message follows the structure:
+ * - Header
+ * - Data size
+ * - Payload (command data)
+ * - CRC checksum
+ *
+ * The encoded output contains all necessary components to validate and process the data by compatible clients.
  */
 class Codec12Encoder : BaseEncoder<String> {
+    /**
+     * Encodes the given data and device ID into an encoded hexadecimal message according to the Codec 12 protocol.
+     *
+     * @param data the string data to be encoded
+     * @param deviceId the unique identifier of the target device for which the data is encoded
+     * @return an instance of the Encoded class containing the device ID and the encoded hexadecimal message
+     */
     override fun encode(
         data: String,
         deviceId: String,

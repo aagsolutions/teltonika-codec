@@ -14,7 +14,18 @@ import eu.aagsolutions.telematics.exceptions.CRCException
 import eu.aagsolutions.telematics.model.CmdResponse
 
 /**
- * Codec12 decoder.
+ * Decodes messages encoded with Codec12 format.
+ *
+ * This class implements the `BaseDecoder` interface for decoding Codec12
+ * formatted hexadecimal messages into `CmdResponse` objects. It validates
+ * the message using CRC checks and extracts the necessary information.
+ *
+ * The decoding process includes:
+ * - Verifying the Codec ID (must be 12).
+ * - Performing a CRC validation on the message.
+ * - Extracting the response payload and reconstructing it as a string.
+ *
+ * @throws CRCException if the message's CRC is invalid or the Codec ID doesn't match.
  */
 class Codec12Decoder : BaseDecoder<CmdResponse> {
     @Throws(CRCException::class)

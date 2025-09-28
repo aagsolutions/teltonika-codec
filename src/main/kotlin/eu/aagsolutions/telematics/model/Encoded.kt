@@ -10,6 +10,14 @@
 
 package eu.aagsolutions.telematics.model
 
+/**
+ * Represents encoded data associated with a specific device.
+ *
+ * Typically used for transferring or storing telemetry-related information in an encoded format.
+ *
+ * @property deviceId The unique identifier of the device associated with the encoded data.
+ * @property data The encoded representation of the data associated with the device.
+ */
 data class Encoded(
     val deviceId: String,
     val data: String,

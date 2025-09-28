@@ -12,9 +12,20 @@ package eu.aagsolutions.telematics.codec
 
 import eu.aagsolutions.telematics.model.Encoded
 
+/**
+ * A generic interface for encoding data into a specific hexadecimal format.
+ * Implementations of this interface are responsible for converting data of type T
+ * into an encoded format that includes a device identifier and a hexadecimal string representation of the data.
+ *
+ * @param T the type of the input data to be encoded
+ */
 interface BaseEncoder<T> {
     /**
-     * Encode to HEX.
+     * Encodes the given data and device identifier into a hexadecimal representation.
+     *
+     * @param data the input data to be encoded
+     * @param deviceId the unique identifier of the device
+     * @return an instance of Encoded containing the device identifier and the encoded hexadecimal data
      */
     fun encode(
         data: T,

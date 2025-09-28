@@ -10,4 +10,10 @@
 
 package eu.aagsolutions.telematics.model
 
+/**
+ * Represents a response for a command sent to a device.
+ *
+ * @property deviceId The unique identifier of the device associated with the command response.
+ * @property data The raw data or payload returned as part of the command response.
+ */
 data class CmdResponse(val deviceId: String, val data: String)

@@ -10,9 +10,20 @@
 
 package eu.aagsolutions.telematics.codec
 
+/**
+ * Represents a base decoder interface for decoding data in HEX format.
+ * This interface serves as a contract for specific decoders to implement
+ * functionality for decoding HEX input into a specified type.
+ *
+ * @param T the type of data that this decoder will produce after decoding
+ */
 interface BaseDecoder<T> {
     /**
-     * Decode HEX input.
+     * Decodes the provided HEX-encoded data specific to a device.
+     *
+     * @param data the HEX-encoded data to be decoded
+     * @param deviceId the unique identifier of the device associated with the data
+     * @return the decoded data of type T
      */
     fun decode(
         data: String,

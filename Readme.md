@@ -1,6 +1,6 @@
 # Teltonika telematic devices coder/decoder
 
-![Build&Test](https://github.com/atdi/teltonika-codec/actions/workflows/main.yml/badge.svg)
+![Build&Test](https://github.com/atdi/teltonika-codec/actions/workflows/main.yml/badge.svg) [![Maven Central](https://img.shields.io/maven-central/v/eu.aagsolutions.telematics/teltonika-codec)](https://central.sonatype.com/artifact/eu.aagsolutions.telematics/teltonika-codec/1.0.0) [![GitHub license](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://opensource.org/licenses/MIT)
 
 ## Introduction
 
@@ -28,7 +28,7 @@ Those values are:
 
 Gradle:
 ```kotlin
-implementation("eu.aagsolutions.telematics:teltonika-codec:0.1.0")
+implementation("eu.aagsolutions.telematics:teltonika-codec:1.0.0")
 ```
 
 Maven:
@@ -36,7 +36,7 @@ Maven:
 <dependency>
     <groupId>eu.aagsolutions.telematics</groupId>
     <artifactId>teltonika-codec</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 

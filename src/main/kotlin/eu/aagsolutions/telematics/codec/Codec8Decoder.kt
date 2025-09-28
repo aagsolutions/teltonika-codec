@@ -36,6 +36,14 @@ class Codec8Decoder : BaseDecoder<List<Telemetry>> {
         private const val DATA_FIELD_LENGTH_START_INDEX = 8
     }
 
+    /**
+     * Decodes AVL (Automatic Vehicle Location) data into a list of telemetry objects.
+     *
+     * @param data the AVL data string to decode
+     * @param deviceId the unique identifier of the device sending the data
+     * @return a list of Telemetry objects that represent the decoded records
+     * @throws CRCException if the CRC validation for the data fails or the number of processed records doesn't match
+     */
     override fun decode(
         data: String,
         deviceId: String,
