@@ -1,28 +1,48 @@
 /*
  * Copyright (c) 2024 Aurel Avramescu.
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the “Software”), to deal
+ * in the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
 
 package eu.aagsolutions.telematics.codec
+
+private const val IMEI_LENGTH = 15
+private const val HEX_RADIX = 16
+private const val IMEI_LENGTH_BYTES = 4
+private const val IMEI_START_INDEX = 4
+private const val BIT_MASK = 0xFF
 
 /**
  * Convert a hexadecimal string to a byte array.
  * @param hexString hexadecimal string
  * @return byte array representation
  */
+@Suppress("MagicNumber")
 fun hexStringToByteArray(hexString: String): ByteArray {
     val len = hexString.length
     val data = ByteArray(len / 2)
     for (i in 0 until len step 2) {
         data[i / 2] =
             (
-                (Character.digit(hexString[i], 16) shl 4) +
-                    Character.digit(hexString[i + 1], 16)
+                (Character.digit(hexString[i], HEX_RADIX) shl 4) +
+                    Character.digit(hexString[i + 1], HEX_RADIX)
             ).toByte()
     }
     return data
@@ -36,7 +56,7 @@ fun hexStringToByteArray(hexString: String): ByteArray {
 fun bytesToHex(bytes: ByteArray): String {
     val hexString = StringBuilder()
     for (aByte in bytes) {
-        val hex = (aByte.toInt() and 0xFF).toString(16)
+        val hex = (aByte.toInt() and BIT_MASK).toString(HEX_RADIX)
         if (hex.length == 1) {
             hexString.append('0')
         }
@@ -51,10 +71,11 @@ fun bytesToHex(bytes: ByteArray): String {
  * @return binary representation
  */
 fun hexToBinary(hex: String): String =
-    hex.map {
-        val binary = Integer.toBinaryString(it.toString().toInt(16))
-        String.format("%4s", binary).replace(' ', '0')
-    }.joinToString("")
+    hex
+        .map {
+            val binary = Integer.toBinaryString(it.toString().toInt(HEX_RADIX))
+            String.format("%4s", binary).replace(' ', '0')
+        }.joinToString("")
 
 /**
  * Encode latitude/longitude to geohash.
@@ -63,6 +84,7 @@ fun hexToBinary(hex: String): String =
  * @param precision geohash precision
  * @return geohash representation
  */
+@Suppress("MagicNumber")
 fun encodeGeoHash(
     latitude: Double,
     longitude: Double,
@@ -147,7 +169,7 @@ fun convertIMEIToASCII(hexIMEI: String): String =
     String(
         hexStringToByteArray(
             hexIMEI.substring(
-                4,
+                IMEI_START_INDEX,
             ),
         ),
     )
@@ -160,12 +182,7 @@ fun isNumeric(hexString: String?): Boolean {
     if (hexString.isNullOrEmpty()) {
         return false
     }
-    for (c in hexString.toCharArray()) {
-        if (!Character.isDigit(c)) {
-            return false
-        }
-    }
-    return true
+    return hexString.all { Character.isDigit(it) }
 }
 
 /**
@@ -174,10 +191,10 @@ fun isNumeric(hexString: String?): Boolean {
  * @param hexIMEI the deviceID in hexadecimal.
  */
 fun isIMEI(hexIMEI: String): Boolean {
-    val imeiLength = hexIMEI.substring(0, 4).toInt(16)
-    if (imeiLength != hexIMEI.substring(4).length / 2) {
+    val imeiLength = hexIMEI.take(IMEI_LENGTH_BYTES).toInt(HEX_RADIX)
+    if (imeiLength != hexIMEI.substring(IMEI_LENGTH_BYTES).length / 2) {
         return false
     }
     val asciiIMEI = convertIMEIToASCII(hexIMEI)
-    return isNumeric(asciiIMEI) && asciiIMEI.length == 15
+    return isNumeric(asciiIMEI) && asciiIMEI.length == IMEI_LENGTH
 }

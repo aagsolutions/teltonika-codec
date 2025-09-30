@@ -1,10 +1,23 @@
 /*
  * Copyright (c) 2024 Aurel Avramescu.
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the “Software”), to deal
+ * in the Software without restriction, including without limitation the rights to
+ * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+ * the Software, and to permit persons to whom the Software is furnished to do
+ * so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
  *
  */
 
@@ -44,6 +57,7 @@ class Codec8Decoder : BaseDecoder<List<Telemetry>> {
      * @return a list of Telemetry objects that represent the decoded records
      * @throws CRCException if the CRC validation for the data fails or the number of processed records doesn't match
      */
+    @Suppress("MagicNumber", "LongMethod")
     override fun decode(
         data: String,
         deviceId: String,
@@ -56,10 +70,12 @@ class Codec8Decoder : BaseDecoder<List<Telemetry>> {
         val dataStep = if (codecId == CODEC_ID_8) CODEC_ID_8_STEP else CODEC_ID_8E_STEP
         checkCrc(data)
         val numberOfRecords =
-            data.substring(NR_OF_RECORDS_START_INDEX, NR_OF_RECORDS_START_INDEX + NUMBER_OF_RECORDS_STEP)
+            data
+                .substring(NR_OF_RECORDS_START_INDEX, NR_OF_RECORDS_START_INDEX + NUMBER_OF_RECORDS_STEP)
                 .toInt(HEXADECIMAL_NR)
         val dataFieldLength =
-            data.substring(DATA_FIELD_LENGTH_START_INDEX, DATA_FIELD_LENGTH_START_INDEX + DATA_FIELD_LENGTH_STEP)
+            data
+                .substring(DATA_FIELD_LENGTH_START_INDEX, DATA_FIELD_LENGTH_START_INDEX + DATA_FIELD_LENGTH_STEP)
                 .toInt(HEXADECIMAL_NR)
         val avlDataStart = data.substring(AVL_DATA_START_INDEX)
         var dataFieldPosition = 0

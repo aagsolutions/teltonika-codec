@@ -1,6 +1,6 @@
 # Teltonika telematic devices coder/decoder
 
-![Build&Test](https://github.com/atdi/teltonika-codec/actions/workflows/main.yml/badge.svg) [![Maven Central](https://img.shields.io/maven-central/v/eu.aagsolutions.telematics/teltonika-codec)](https://central.sonatype.com/artifact/eu.aagsolutions.telematics/teltonika-codec/1.0.0) [![GitHub license](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://opensource.org/licenses/MIT)
+![Build&Test](https://github.com/aagsolutions/teltonika-codec/actions/workflows/main.yml/badge.svg) [![Maven Central](https://img.shields.io/maven-central/v/eu.aagsolutions.telematics/teltonika-codec)](https://central.sonatype.com/artifact/eu.aagsolutions.telematics/teltonika-codec/1.0.1) [![GitHub license](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://opensource.org/licenses/MIT) ![CodeQL Scan Status](https://github.com/aagsolutions/teltonika-codec/actions/workflows/codeql.yml/badge.svg)
 
 ## Introduction
 
