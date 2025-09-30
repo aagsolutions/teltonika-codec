@@ -76,7 +76,7 @@ centralPortal {
     pom {
         group = "eu.aagsolutions.telematics"
         name = "teltonika-codec"
-        url = "https://github.com/atdi/teltonika-codec"
+        url = "https://github.com/aagsolutions/teltonika-codec"
         packaging = "jar"
         licenses {
             license {
@@ -85,9 +85,9 @@ centralPortal {
             }
         }
         scm {
-            url.set("https://github.com/atdi/teltonika-codec")
-            connection.set("scm:git:git://github.com/atdi/teltonika-codec.git")
-            developerConnection.set("scm:git:ssh://github.com/atdi/teltonika-codec.git")
+            url.set("https://github.com/aagsolutions/teltonika-codec")
+            connection.set("scm:git:git://github.com/aagsolutions/teltonika-codec.git")
+            developerConnection.set("scm:git:ssh://github.com/aagsolutions/teltonika-codec.git")
         }
         developers {
             developer {
