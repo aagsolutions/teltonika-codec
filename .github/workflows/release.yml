@@ -1,11 +1,11 @@
 name: Release
-permissions:
-  contents: read
 
 on: workflow_dispatch
 
 jobs:
   build:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
