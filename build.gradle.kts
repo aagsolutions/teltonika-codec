@@ -22,18 +22,21 @@
  */
 
 import net.researchgate.release.ReleaseExtension
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") version "2.2.10"
+    kotlin("jvm") version "2.3.10"
+    id("org.jetbrains.dokka") version "2.1.0-Beta"
     id("org.jlleitschuh.gradle.ktlint") version "13.1.0"
     id("net.researchgate.release") version "3.1.0"
     id("net.thebugmc.gradle.sonatype-central-portal-publisher") version "1.2.4"
     id("signing")
-    id("dev.detekt") version "2.0.0-alpha.0"
+    id("jacoco")
+    id("dev.detekt") version "2.0.0-alpha.2"
 }
 
 detekt {
-    toolVersion = "2.0.0-alpha.0"
+    toolVersion = "2.0.0-alpha.2"
     buildUponDefaultConfig = true
     config.setFrom(
         resources.text.fromString(
@@ -45,6 +48,19 @@ detekt {
             """.trimIndent(),
         ),
     )
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withJavadocJar()
+    withSourcesJar()
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_21)
+    }
 }
 
 description = "Small library for decoding/encoding Teltonika CODEC8, CODEC8E and CODEC12"

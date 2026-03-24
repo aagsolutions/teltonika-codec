@@ -23,7 +23,6 @@
 
 package eu.aagsolutions.telematics.codec
 
-
 private const val IMEI_LENGTH = 15
 private const val HEX_RADIX = 16
 private const val IMEI_LENGTH_BYTES = 4
