@@ -28,7 +28,7 @@ Those values are:
 
 Gradle:
 ```kotlin
-implementation("eu.aagsolutions.telematics:teltonika-codec:1.0.0")
+implementation("eu.aagsolutions.telematics:teltonika-codec:2.0.0")
 ```
 
 Maven:
@@ -36,7 +36,7 @@ Maven:
 <dependency>
     <groupId>eu.aagsolutions.telematics</groupId>
     <artifactId>teltonika-codec</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
