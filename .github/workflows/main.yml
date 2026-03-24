@@ -1,4 +1,5 @@
 name: Build&Test
+
 permissions:
   contents: read
 
@@ -6,6 +7,10 @@ on:
   push:
     branches:
       - '*'
+    paths-ignore:
+      - '**/*.properties'
+      - '**/*.md'
+      - 'samples'
 
 jobs:
   build:
@@ -13,12 +18,7 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Set up Java
-        uses: actions/setup-java@v4.5.0
-        with:
-          java-version: '21'
-          distribution: "zulu"
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Setup Java
+        uses: ./.github/actions/setup-java
       - name: Build&Test
         run: ./gradlew build
