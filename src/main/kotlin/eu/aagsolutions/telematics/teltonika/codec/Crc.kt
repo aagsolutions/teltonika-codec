@@ -21,9 +21,9 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.codec
 
-import eu.aagsolutions.telematics.exceptions.CRCException
+import eu.aagsolutions.telematics.teltonika.exceptions.CRCException
 
 private const val BIT_MASK = 0xFF
 private const val CRC_16_BIT_MASK = 0xA001

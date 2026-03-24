@@ -21,17 +21,27 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.codec
 
+import eu.aagsolutions.telematics.teltonika.codec.Codec12Encoder
+import eu.aagsolutions.telematics.teltonika.model.Encoded
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ConvertersKtTest {
+class Codec12EncoderTest {
     @Test
-    fun `it should encode gps coordinates to GeoHash successfully`() {
-        val latitude = 57.64911
-        val longitude = 10.40744
-        val geoHash = encodeGeoHash(latitude, longitude)
-        assertEquals("u4pruydqqvj8", geoHash)
+    fun `it should successful encode getinfo cmd`() {
+        val codec = Codec12Encoder()
+        val encoded = codec.encode("getinfo", "defaultImei")
+        val expected = Encoded("defaultImei", "000000000000000F0C010500000007676574696E666F0100004312")
+        assertEquals(expected, encoded)
+    }
+
+    @Test
+    fun `it should successful encode getvin cmd`() {
+        val codec = Codec12Encoder()
+        val encoded = codec.encode("getvin", "defaultImei")
+        val expected = Encoded("defaultImei", "000000000000000e0c01050000000667657476696e010000670a".uppercase())
+        assertEquals(expected, encoded)
     }
 }

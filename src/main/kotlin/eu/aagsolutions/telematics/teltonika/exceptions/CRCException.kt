@@ -21,26 +21,26 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.exceptions
 
-import eu.aagsolutions.telematics.model.Encoded
-import kotlin.test.Test
-import kotlin.test.assertEquals
+/**
+ * Exception thrown when a cyclic redundancy check (CRC) validation fails.
+ *
+ * This exception indicates that the integrity verification of data has failed,
+ * suggesting potential data corruption or transmission errors.
+ */
+class CRCException : RuntimeException {
+    /**
+     * Creates a new CRCException with a detailed message describing the failure.
+     *
+     * @param message The error message explaining what went wrong with the CRC check.
+     */
+    constructor(message: String) : super(message)
 
-class Codec12EncoderTest {
-    @Test
-    fun `it should successful encode getinfo cmd`() {
-        val codec = Codec12Encoder()
-        val encoded = codec.encode("getinfo", "defaultImei")
-        val expected = Encoded("defaultImei", "000000000000000F0C010500000007676574696E666F0100004312")
-        assertEquals(expected, encoded)
-    }
-
-    @Test
-    fun `it should successful encode getvin cmd`() {
-        val codec = Codec12Encoder()
-        val encoded = codec.encode("getvin", "defaultImei")
-        val expected = Encoded("defaultImei", "000000000000000e0c01050000000667657476696e010000670a".uppercase())
-        assertEquals(expected, encoded)
-    }
+    /**
+     * Creates a new CRCException wrapping an underlying cause that triggered the CRC failure.
+     *
+     * @param e The [Throwable] representing the root cause of this exception.
+     */
+    constructor(e: Throwable) : super(e)
 }

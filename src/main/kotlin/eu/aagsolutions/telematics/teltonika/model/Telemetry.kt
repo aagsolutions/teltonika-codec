@@ -21,15 +21,24 @@
  *
  */
 
-package eu.aagsolutions.telematics.model
+package eu.aagsolutions.telematics.teltonika.model
 
 /**
- * Represents a response for a command sent to a device.
+ * Represents telemetry data associated with a specific device and event.
  *
- * @property deviceId The unique identifier of the device associated with the command response.
- * @property data The raw data or payload returned as part of the command response.
+ * This class serves as the main structure for capturing telemetry information, including
+ * device identification, event timing, permanent input/output data, and additional event-specific
+ * data points.
+ *
+ * @property deviceId The unique identifier of the device associated with the telemetry data.
+ * @property eventTimestamp The timestamp of the event in milliseconds.
+ * @property permanentIO Permanent input/output data associated with the telemetry event.
+ * @property data A map containing additional event-specific data, where the key represents
+ * the data identifier and the value represents its corresponding value as a string.
  */
-data class CmdResponse(
-    val deviceId: String,
-    val data: String,
+data class Telemetry(
+    var deviceId: String,
+    var eventTimestamp: Long,
+    var permanentIO: PermanentIO,
+    var data: Map<Int, String>,
 )

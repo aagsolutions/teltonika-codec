@@ -21,7 +21,7 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.codec
 
 private const val IMEI_LENGTH = 15
 private const val HEX_RADIX = 16

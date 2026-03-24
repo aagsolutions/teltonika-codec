@@ -21,17 +21,25 @@
  *
  */
 
-package eu.aagsolutions.telematics.model
+package eu.aagsolutions.telematics.teltonika.codec
 
 /**
- * Represents encoded data associated with a specific device.
+ * Represents a base decoder interface for decoding data in HEX format.
+ * This interface serves as a contract for specific decoders to implement
+ * functionality for decoding HEX input into a specified type.
  *
- * Typically used for transferring or storing telemetry-related information in an encoded format.
- *
- * @property deviceId The unique identifier of the device associated with the encoded data.
- * @property data The encoded representation of the data associated with the device.
+ * @param T the type of data that this decoder will produce after decoding
  */
-data class Encoded(
-    val deviceId: String,
-    val data: String,
-)
+interface BaseDecoder<T> {
+    /**
+     * Decodes the provided HEX-encoded data specific to a device.
+     *
+     * @param data the HEX-encoded data to be decoded
+     * @param deviceId the unique identifier of the device associated with the data
+     * @return the decoded data of type T
+     */
+    fun decode(
+        data: String,
+        deviceId: String,
+    ): T
+}

@@ -21,10 +21,10 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.codec
 
-import eu.aagsolutions.telematics.exceptions.CRCException
-import eu.aagsolutions.telematics.model.CmdResponse
+import eu.aagsolutions.telematics.teltonika.exceptions.CRCException
+import eu.aagsolutions.telematics.teltonika.model.CmdResponse
 
 /**
  * Decodes messages encoded with Codec12 format.

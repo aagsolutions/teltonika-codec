@@ -21,26 +21,17 @@
  *
  */
 
-package eu.aagsolutions.telematics.exceptions
+package eu.aagsolutions.telematics.teltonika.model
 
 /**
- * Exception thrown when a cyclic redundancy check (CRC) validation fails.
+ * Represents encoded data associated with a specific device.
  *
- * This exception indicates that the integrity verification of data has failed,
- * suggesting potential data corruption or transmission errors.
+ * Typically used for transferring or storing telemetry-related information in an encoded format.
+ *
+ * @property deviceId The unique identifier of the device associated with the encoded data.
+ * @property data The encoded representation of the data associated with the device.
  */
-class CRCException : RuntimeException {
-    /**
-     * Creates a new CRCException with a detailed message describing the failure.
-     *
-     * @param message The error message explaining what went wrong with the CRC check.
-     */
-    constructor(message: String) : super(message)
-
-    /**
-     * Creates a new CRCException wrapping an underlying cause that triggered the CRC failure.
-     *
-     * @param e The [Throwable] representing the root cause of this exception.
-     */
-    constructor(e: Throwable) : super(e)
-}
+data class Encoded(
+    val deviceId: String,
+    val data: String,
+)

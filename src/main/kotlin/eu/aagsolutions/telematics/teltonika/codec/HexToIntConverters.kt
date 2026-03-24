@@ -1,4 +1,4 @@
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.codec
 
 import java.math.BigDecimal
 import java.nio.ByteBuffer

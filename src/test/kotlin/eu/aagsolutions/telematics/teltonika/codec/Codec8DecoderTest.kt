@@ -21,10 +21,11 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.codec
 
-import eu.aagsolutions.telematics.exceptions.CRCException
-import eu.aagsolutions.telematics.model.Telemetry
+import eu.aagsolutions.telematics.teltonika.codec.Codec8Decoder
+import eu.aagsolutions.telematics.teltonika.exceptions.CRCException
+import eu.aagsolutions.telematics.teltonika.model.Telemetry
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith

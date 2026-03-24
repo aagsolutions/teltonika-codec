@@ -21,11 +21,11 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.codec
 
-import eu.aagsolutions.telematics.exceptions.CRCException
-import eu.aagsolutions.telematics.model.PermanentIO
-import eu.aagsolutions.telematics.model.Telemetry
+import eu.aagsolutions.telematics.teltonika.exceptions.CRCException
+import eu.aagsolutions.telematics.teltonika.model.PermanentIO
+import eu.aagsolutions.telematics.teltonika.model.Telemetry
 
 /**
  * Class for decoding CODEC8 and CODEC8E.

@@ -21,9 +21,9 @@
  *
  */
 
-package eu.aagsolutions.telematics.codec
+package eu.aagsolutions.telematics.teltonika.codec
 
-import eu.aagsolutions.telematics.model.Encoded
+import eu.aagsolutions.telematics.teltonika.model.Encoded
 
 /**
  * A specialized implementation of the `BaseEncoder` interface for encoding data using the Codec 12 protocol.

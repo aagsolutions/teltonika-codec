@@ -21,24 +21,18 @@
  *
  */
 
-package eu.aagsolutions.telematics.model
+package eu.aagsolutions.telematics.teltonika.codec
 
-/**
- * Represents telemetry data associated with a specific device and event.
- *
- * This class serves as the main structure for capturing telemetry information, including
- * device identification, event timing, permanent input/output data, and additional event-specific
- * data points.
- *
- * @property deviceId The unique identifier of the device associated with the telemetry data.
- * @property eventTimestamp The timestamp of the event in milliseconds.
- * @property permanentIO Permanent input/output data associated with the telemetry event.
- * @property data A map containing additional event-specific data, where the key represents
- * the data identifier and the value represents its corresponding value as a string.
- */
-data class Telemetry(
-    var deviceId: String,
-    var eventTimestamp: Long,
-    var permanentIO: PermanentIO,
-    var data: Map<Int, String>,
-)
+import eu.aagsolutions.telematics.teltonika.codec.encodeGeoHash
+import kotlin.test.Test
+import kotlin.test.assertEquals
+
+class ConvertersKtTest {
+    @Test
+    fun `it should encode gps coordinates to GeoHash successfully`() {
+        val latitude = 57.64911
+        val longitude = 10.40744
+        val geoHash = encodeGeoHash(latitude, longitude)
+        assertEquals("u4pruydqqvj8", geoHash)
+    }
+}
