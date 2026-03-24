@@ -23,7 +23,24 @@
 
 package eu.aagsolutions.telematics.exceptions
 
+/**
+ * Exception thrown when a cyclic redundancy check (CRC) validation fails.
+ *
+ * This exception indicates that the integrity verification of data has failed,
+ * suggesting potential data corruption or transmission errors.
+ */
 class CRCException : RuntimeException {
+    /**
+     * Creates a new CRCException with a detailed message describing the failure.
+     *
+     * @param message The error message explaining what went wrong with the CRC check.
+     */
     constructor(message: String) : super(message)
+
+    /**
+     * Creates a new CRCException wrapping an underlying cause that triggered the CRC failure.
+     *
+     * @param e The [Throwable] representing the root cause of this exception.
+     */
     constructor(e: Throwable) : super(e)
 }

@@ -23,6 +23,12 @@
 
 package eu.aagsolutions.telematics.codec
 
+import java.math.BigDecimal
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+
+
+
 private const val IMEI_LENGTH = 15
 private const val HEX_RADIX = 16
 private const val IMEI_LENGTH_BYTES = 4
@@ -198,3 +204,42 @@ fun isIMEI(hexIMEI: String): Boolean {
     val asciiIMEI = convertIMEIToASCII(hexIMEI)
     return isNumeric(asciiIMEI) && asciiIMEI.length == IMEI_LENGTH
 }
+
+/**
+ * Converts a hexadecimal string to an integer.
+ * @param data hexadecimal string to convert
+ */
+fun signedNoMultiply(data: String): Int {
+    val hexPadded = data.padStart(4, '0')
+    val binary = hexStringToByteArray(hexPadded)
+    return ByteBuffer.wrap(binary)
+        .order(ByteOrder.BIG_ENDIAN)
+        .short.toInt()
+}
+
+/**
+ * Converts a hexadecimal string to a BigDecimal with a multiplier of 0.1.
+ * @param data hexadecimal string to convert
+ */
+fun multiplyInt01(data: String): BigDecimal =
+    BigDecimal(data.toInt(16)).multiply(BigDecimal("0.1"))
+
+/**
+ * Converts a hexadecimal string to a BigDecimal with a multiplier of 0.01.
+ * @param data hexadecimal string to convert
+ */
+fun multiplyInt001(data: String): BigDecimal =
+    BigDecimal(data.toInt(16)).multiply(BigDecimal("0.01"))
+
+/**
+ * Converts a hexadecimal string to a BigDecimal with a multiplier of 0.001.
+ * @param data hexadecimal string to convert
+ */
+fun multiplyInt0001(data: String): BigDecimal =
+    BigDecimal(data.toInt(16)).multiply(BigDecimal("0.001"))
+
+/**
+ * Converts a hexadecimal string to an integer.
+ * @param data hexadecimal string to convert
+ */
+fun parseInt(data: String): Int = data.toInt(16)
