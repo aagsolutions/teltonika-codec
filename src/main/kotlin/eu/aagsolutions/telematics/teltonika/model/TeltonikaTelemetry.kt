@@ -36,9 +36,9 @@ package eu.aagsolutions.telematics.teltonika.model
  * @property data A map containing additional event-specific data, where the key represents
  * the data identifier and the value represents its corresponding value as a string.
  */
-data class Telemetry(
+data class TeltonikaTelemetry(
     var deviceId: String,
     var eventTimestamp: Long,
-    var permanentIO: PermanentIO,
+    var permanentIO: TeltonikaPermanentIO,
     var data: Map<Int, String>,
 )

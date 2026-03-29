@@ -24,13 +24,13 @@
 package eu.aagsolutions.telematics.teltonika.codec
 
 import eu.aagsolutions.telematics.teltonika.exceptions.CRCException
-import eu.aagsolutions.telematics.teltonika.model.CmdResponse
+import eu.aagsolutions.telematics.teltonika.model.TeltonikaCmdResponse
 
 /**
  * Decodes messages encoded with Codec12 format.
  *
  * This class implements the `BaseDecoder` interface for decoding Codec12
- * formatted hexadecimal messages into `CmdResponse` objects. It validates
+ * formatted hexadecimal messages into `TeltonikaCmdResponse` objects. It validates
  * the message using CRC checks and extracts the necessary information.
  *
  * The decoding process includes:
@@ -40,13 +40,13 @@ import eu.aagsolutions.telematics.teltonika.model.CmdResponse
  *
  * @throws CRCException if the message's CRC is invalid or the Codec ID doesn't match.
  */
-class Codec12Decoder : BaseDecoder<CmdResponse> {
+class Codec12Decoder : BaseDecoder<TeltonikaCmdResponse> {
     @Suppress("MagicNumber")
     @Throws(CRCException::class)
     override fun decode(
         data: String,
         deviceId: String,
-    ): CmdResponse {
+    ): TeltonikaCmdResponse {
         val codecId = data.substring(16, 18).toInt(16)
         if (codecId != 12) {
             throw CRCException("Invalid codec")
@@ -54,6 +54,6 @@ class Codec12Decoder : BaseDecoder<CmdResponse> {
         checkCrc(data)
         val dataSize = data.substring(22, 30).toInt(16)
         val rsp = hexStringToByteArray(data.substring(30, 30 + dataSize * 2))
-        return CmdResponse(deviceId, String(rsp, Charsets.UTF_8))
+        return TeltonikaCmdResponse(deviceId, String(rsp, Charsets.UTF_8))
     }
 }

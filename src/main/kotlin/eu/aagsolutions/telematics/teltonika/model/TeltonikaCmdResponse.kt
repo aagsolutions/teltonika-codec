@@ -24,27 +24,12 @@
 package eu.aagsolutions.telematics.teltonika.model
 
 /**
- * Represents permanent input/output data associated with a telemetry event.
+ * Represents a response for a command sent to a device.
  *
- * This class contains data elements that can be found in telemetry events for all
- * Teltonika devices and describes various properties such as location, speed, and priority.
- *
- * @property timestamp The timestamp of the event in milliseconds.
- * @property priority The priority of the event, represented as a short value.
- * @property geoHash The geohash representing the approximate location of the event.
- * @property altitude The altitude at which the event took place, represented in meters.
- * @property angle The direction or bearing angle of the event, typically in degrees.
- * @property satellites The number of satellites available during the event.
- * @property gpsSpeed The GPS-calculated speed during the event, represented in km/h.
- * @property eventId The unique identifier for the specific event.
+ * @property deviceId The unique identifier of the device associated with the command response.
+ * @property data The raw data or payload returned as part of the command response.
  */
-data class PermanentIO(
-    var timestamp: Long,
-    var priority: Short,
-    var geoHash: String,
-    var altitude: Int,
-    var angle: Int,
-    var satellites: Int,
-    var gpsSpeed: Int,
-    var eventId: Int,
+data class TeltonikaCmdResponse(
+    val deviceId: String,
+    val data: String,
 )

@@ -23,9 +23,8 @@
 
 package eu.aagsolutions.telematics.teltonika.codec
 
-import eu.aagsolutions.telematics.teltonika.codec.Codec8Decoder
 import eu.aagsolutions.telematics.teltonika.exceptions.CRCException
-import eu.aagsolutions.telematics.teltonika.model.Telemetry
+import eu.aagsolutions.telematics.teltonika.model.TeltonikaTelemetry
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -59,7 +58,7 @@ class Codec8DecoderTest {
     @Test
     fun `it should successful decode a message with 6 records`() {
         val codec8 = Codec8Decoder()
-        val values: List<Telemetry> = codec8.decode(codec8ex6values, "defaultImei")
+        val values: List<TeltonikaTelemetry> = codec8.decode(codec8ex6values, "defaultImei")
         assertEquals(6, values.size)
     }
 

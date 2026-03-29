@@ -24,15 +24,15 @@
 package eu.aagsolutions.telematics.teltonika.codec
 
 import eu.aagsolutions.telematics.teltonika.exceptions.CRCException
-import eu.aagsolutions.telematics.teltonika.model.PermanentIO
-import eu.aagsolutions.telematics.teltonika.model.Telemetry
+import eu.aagsolutions.telematics.teltonika.model.TeltonikaPermanentIO
+import eu.aagsolutions.telematics.teltonika.model.TeltonikaTelemetry
 
 /**
  * Class for decoding CODEC8 and CODEC8E.
  * The main difference between CODEC8 and CODEC8E is the iteration step length,
  * and also CODEC8E can have more data.
  */
-class Codec8Decoder : BaseDecoder<List<Telemetry>> {
+class Codec8Decoder : BaseDecoder<List<TeltonikaTelemetry>> {
     companion object {
         private const val HEXADECIMAL_NR: Int = 16
         private val DATA_LENGTHS = intArrayOf(2, 4, 8, HEXADECIMAL_NR)
@@ -61,7 +61,7 @@ class Codec8Decoder : BaseDecoder<List<Telemetry>> {
     override fun decode(
         data: String,
         deviceId: String,
-    ): List<Telemetry> {
+    ): List<TeltonikaTelemetry> {
         val codecId =
             data.substring(CODEC_ID_START_INDEX, CODEC_ID_START_INDEX + CODEC_ID_8_STEP).toInt(HEXADECIMAL_NR)
         if (codecId != CODEC_ID_8E && codecId != CODEC_ID_8) {
@@ -82,7 +82,7 @@ class Codec8Decoder : BaseDecoder<List<Telemetry>> {
 
         val dataEnd = 2 * dataFieldLength - DATA_END_SUBTRACT
         val eventTimestamp = System.currentTimeMillis()
-        val data: MutableList<Telemetry> = ArrayList()
+        val data: MutableList<TeltonikaTelemetry> = ArrayList()
         while (dataFieldPosition < dataEnd) {
             val timestampHex = avlDataStart.substring(dataFieldPosition, dataFieldPosition + HEXADECIMAL_NR)
             dataFieldPosition += timestampHex.length
@@ -106,7 +106,7 @@ class Codec8Decoder : BaseDecoder<List<Telemetry>> {
             val latitude = calculateCoordinate(latitudeHex)
             val geoHash = encodeGeoHash(latitude, longitude)
             val permanentIO =
-                PermanentIO(
+                TeltonikaPermanentIO(
                     timestampHex.toLong(HEXADECIMAL_NR),
                     priorityHex.toShort(HEXADECIMAL_NR),
                     geoHash,
@@ -137,7 +137,7 @@ class Codec8Decoder : BaseDecoder<List<Telemetry>> {
                 val byteIoNumber = avlDataStart.substring(dataFieldPosition, dataFieldPosition + dataStep)
                 dataFieldPosition += byteIoNumber.length
             }
-            data.add(Telemetry(deviceId, eventTimestamp, permanentIO, eventualIoValues))
+            data.add(TeltonikaTelemetry(deviceId, eventTimestamp, permanentIO, eventualIoValues))
         }
         if (numberOfRecords != data.size) {
             throw CRCException("Number of processed records doesn't match")
